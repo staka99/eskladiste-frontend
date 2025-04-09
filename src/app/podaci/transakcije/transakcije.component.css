@@ -1,0 +1,144 @@
+.company-container {
+  background-color: rgb(234, 234, 234);
+  min-height: 100vh;
+}
+
+.table {
+  padding-top: 50px;
+  padding-bottom: 60px;
+  margin: 0 auto;
+  width: 80%;
+}
+
+mat-cell:nth-child(1),
+mat-header-cell:nth-child(1) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+mat-cell:nth-child(2),
+mat-header-cell:nth-child(2) {
+  display: flex;
+  flex: 0 0 20%;
+}
+
+mat-cell:nth-child(3),
+mat-header-cell:nth-child(3) {
+  display: flex;
+  justify-content: left;
+  flex: 0 0 40%;
+}
+
+mat-cell:nth-child(4),
+mat-header-cell:nth-child(4) {
+  display: flex;
+  flex: 0 0 10%;
+  justify-content: center;
+}
+
+mat-cell:nth-child(5),
+mat-header-cell:nth-child(5) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+mat-cell:nth-child(6),
+mat-header-cell:nth-child(6) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+
+.title-center {
+  margin: 0 auto;
+}
+
+.mat-toolbar {
+  background: #fbda61;
+  color: black;
+  width: 100%;
+}
+
+.mat-icon {
+  color: rgb(145, 145, 145);
+}
+
+/* --------------- is not Admin ---------------------------*/
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal h2 {
+  color: #d9534f;
+  margin-bottom: 10px;
+}
+
+.modal p {
+  color: #333;
+  font-size: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .table {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  .mat-toolbar {
+    padding: 0 10px;
+  }
+
+  .title-center {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .mat-toolbar {
+    padding: 0 5px;
+  }
+
+  .title-center {
+    font-size: 1.2rem;
+  }
+
+}

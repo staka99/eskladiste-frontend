@@ -1,0 +1,85 @@
+<div class="company-container">
+  <div class="table">
+
+    <div class="filter-container">
+      <div class="action-buttons">
+        <button mat-raised-button color="warn" class="ulaz-button" (click)="openDialog(1)">ULAZ ROBE</button>
+        <button mat-raised-button class="otpis-button" (click)="openDialog(2)">OTPIS ROBE</button>
+      </div>
+
+    <div class="filter-container">
+      <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
+        <mat-label>Pretraži artikle</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Unesi naziv ili šifru..."
+          name="filter"
+          (keyup)="applyFilter($event)"
+        />
+        <button mat-icon-button matSuffix disabled>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+
+  <mat-toolbar>
+    <span class="title-center"> Lista artikala </span>
+  </mat-toolbar>
+
+  <div class="container mat-elavation-z8">
+    </div>
+
+    <mat-table matSort [dataSource]="dataSource" class="mat-cell" matSortActive="sifra" matSortDirection="asc">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell mat-sort-header mat-sort-header *matHeaderCellDef> RB </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index"> {{i + 1}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="sifra">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Šifra </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.sifra}} </mat-cell>
+    </ng-container>
+
+      <ng-container matColumnDef="naziv">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Naziv </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.naziv}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="jedinica">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Jedinica mjere </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.jedinica }} </mat-cell>
+      </ng-container>
+
+    <ng-container matColumnDef="stanje">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Stanje </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.stanje}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row; let i = index">
+        <button mat-icon-button (click)="openDialog(3, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button *ngIf="row.stanje == 0" (click)="openDialog(4, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)">
+          <mat-icon class="delete-icon">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+      <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns"> </mat-row>
+    </mat-table>
+
+  </div>
+
+  <div class="paginator-container">
+    <mat-paginator  [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]">
+    </mat-paginator>
+  </div>
+</div>
+

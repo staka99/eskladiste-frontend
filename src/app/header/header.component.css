@@ -1,0 +1,51 @@
+header {
+  background: #1e1e2e;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  width: 40px;
+  margin-right: 10px;
+}
+
+.brand-name {
+  color: #fbda61;
+  font-size: 2.0rem;
+  font-weight: italic;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s ease-in-out;
+  padding: 10px 15px;
+}
+
+nav a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+nav a.active {
+  font-weight: bold;
+  color: #fbda61;
+  border-bottom: 2px solid #fbda61;
+}
