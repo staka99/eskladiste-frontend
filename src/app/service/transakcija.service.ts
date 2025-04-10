@@ -1,8 +1,8 @@
-import { Transakcija } from './../model/transakcija';
 import { TRANSAKCIJA_URL } from './../../constants';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
+import { Transakcija } from '../model/transakcija';
 
 @Injectable({
   providedIn: 'root'

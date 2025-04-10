@@ -12,7 +12,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ArtiklComponent } from '../../dijalozi/artikl/artikl.component';
+import { ArtiklDijalogComponent } from '../../dijalozi/artikl-dijalog/artikl-dijalog.component';
 
 @Component({
   selector: 'app-skladiste',
@@ -60,7 +60,7 @@ export class SkladisteComponent implements OnInit, OnDestroy{
   }
 
   public openDialog(flag:number, id?:number, sifra?:String, naziv?:String, jedinica?:String, stanje?:number ) {
-    const dialogRef = this.dialog.open(ArtiklComponent, {data : { id, sifra, naziv, jedinica, stanje }});
+    const dialogRef = this.dialog.open(ArtiklDijalogComponent, {data : { id, sifra, naziv, jedinica, stanje }});
       dialogRef.componentInstance.flag = flag;
       dialogRef.afterClosed().subscribe(
         (result) => {

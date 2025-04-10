@@ -1,0 +1,40 @@
+<div class="container">
+  <h3 mat-dialog-title *ngIf="flag == 3">Brisanje transakcije</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+    <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Datum" name="datum" [disabled]="flag == 3" [(ngModel)]="formattedDate" required/>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Opis" name="opis" [disabled]="flag == 3" [(ngModel)]="data.opis" />
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Artikl" name="artikl" [disabled]="flag == 3" [(ngModel)]="data.artikl" />
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Količina" name="kolicina" [disabled]="flag == 3" [(ngModel)]="data.kolicina" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <div class="form" style="color: red; font-size: 13px;">
+    Da li ste sigurni da su podaci o ovoj transakciji greška i da želite da ih obrišete?
+  </div>
+
+  <div class="mat-dialog-actions">
+      <button matButton *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Brisanje</button>
+      <button matButton (click)="cancel()">Odustani</button>
+  </div>
+</div>

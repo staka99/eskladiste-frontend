@@ -1,4 +1,4 @@
-<div class="company-container">
+<div class="skladiste-container">
   <div class="table">
 
     <div class="filter-container">
@@ -34,8 +34,8 @@
     <mat-table matSort [dataSource]="dataSource" class="mat-cell" matSortActive="sifra" matSortDirection="asc">
 
       <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header mat-sort-header *matHeaderCellDef> RB </mat-header-cell>
-        <mat-cell *matCellDef="let row; let i = index"> {{i + 1}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef> RB </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index"> {{(paginator.pageIndex * paginator.pageSize) + i + 1}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="sifra">

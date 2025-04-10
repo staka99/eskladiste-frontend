@@ -1,45 +1,66 @@
-<div class="company-container">
+<div class="transakcije-container">
   <div class="table">
 
+    <div class="filter-container">
+      <mat-form-field appearance="outline" class="search-bar" subscriptSizing="dynamic">
+        <mat-label>Pretraži transakcije</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Unesi opis ili datum..."
+          name="filter"
+          (keyup)="applyFilter($event)"
+        />
+        <button mat-icon-button matSuffix disabled>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
   <mat-toolbar>
-    <span class="title-center"> Transakcije </span>
+    <span class="title-center"> Evidencija transakcija u skladištu </span>
   </mat-toolbar>
 
   <div class="container mat-elavation-z8">
     </div>
 
-    <mat-table matSort [dataSource]="dataSource" class="mat-cell">
+    <mat-table matSort [dataSource]="dataSource" class="mat-cell" matSortActive="datum" matSortDirection="desc">
 
       <ng-container matColumnDef="id">
-        <mat-header-cell mat-sort-header *matHeaderCellDef> ID </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef> RB </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index"> {{(paginator.pageIndex * paginator.pageSize) + i + 1}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="datum">
-        <mat-header-cell *matHeaderCellDef> Datum </mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Datum </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.datum | date:'dd.MM.yyyy' }} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="opis">
-        <mat-header-cell *matHeaderCellDef> Opis </mat-header-cell>
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Opis </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.opis }} </mat-cell>
       </ng-container>
 
     <ng-container matColumnDef="artikl">
-      <mat-header-cell *matHeaderCellDef> Artikl </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.artikl.sifra + " " + row.artikl.naziv}} </mat-cell>
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Artikl </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.artikl}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="kolicina">
-      <mat-header-cell *matHeaderCellDef> Količina </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.kolicina}} </mat-cell>
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Količina </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.kolicina + " " + row.jedinica }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="novoStanje">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Novo stanje </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.novoStanje + " " + row.jedinica}} </mat-cell>
     </ng-container>
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
         </mat-header-cell>
         <mat-cell *matCellDef="let row; let i = index">
-          <button mat-icon-button>
+          <button mat-icon-button (click)="openDialog(3, row.id, row.datum, row.opis, row.artikl, row.kolicina, row.novoStanje)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
@@ -50,5 +71,11 @@
     </mat-table>
 
   </div>
+
+  <div class="paginator-container">
+    <mat-paginator  [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]">
+    </mat-paginator>
+  </div>
+
 </div>
 

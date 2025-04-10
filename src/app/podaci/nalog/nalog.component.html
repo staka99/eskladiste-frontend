@@ -1,0 +1,96 @@
+<div class="nalog-container">
+  <div class="top-bar">
+    <div class="nalog-select">
+      <label class="label">Odaberite radni nalog za prikaz:</label>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-select [compareWith]="compare" placeholder="Odaberite nalog" name="nalog" [(ngModel)]="nalog"  (ngModelChange)="loadData()" required>
+          <mat-option [value]="null">-</mat-option>
+          <mat-option *ngFor="let nalog of nalozi" [value]="nalog">
+            {{ nalog.broj + " " + nalog.kupac?.naziv }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="nalog-button">
+      <button mat-raised-button color="warn" class="kreiraj-button">KREIRAJ NOVI RADNI NALOG</button>
+    </div>
+  </div>
+
+  <div *ngIf="nalog; else nemaNalog">
+
+    <!--------- Osnovni podaci o nalogu --------------->
+    <div class="nalog-info-container">
+      <h2>📄 Osnovni podaci radnog naloga</h2>
+      <div class="nalog-info-row"><strong>Broj naloga:</strong> {{ nalog.broj }}</div>
+      <div class="nalog-info-row"><strong>Datum:</strong> {{ nalog.datum | date: 'dd.MM.yyyy' }}</div>
+      <div class="nalog-info-row"><strong>Kupac:</strong> {{ nalog.kupac?.naziv }}</div>
+      <div class="nalog-info-row"><strong>Adresa:</strong> {{ nalog.kupac?.adresa }}, {{ nalog.kupac?.postanskiBroj }} {{ nalog.kupac?.grad }}</div>
+      <div class="nalog-info-row"><strong>Status:</strong>
+        <span [class.zavrsen]="nalog.zavrsen" [class.nezavrsen]="!nalog.zavrsen">
+          {{ nalog.zavrsen ? 'Završen' : 'U izradi' }}
+        </span>
+      </div>
+      <div class="nalog-actions">
+        <button mat-raised-button color="accent" class="action-button" (click)="izmjenaNaloga()" *ngIf="!nalog.zavrsen">IZMIJENI PODATKE</button>
+        <button mat-raised-button color="warn" class="action-button" (click)="brisanjeNaloga()" *ngIf="!nalog.zavrsen">OBRIŠI</button>
+      </div>
+    </div>
+
+    <!--------- Prikaz stavki za određeni nalog --------------->
+    <div class="tabela">
+        <div class="table">
+          <div class="nalog-info-placeholder" *ngIf="nalog.zavrsen">
+            Nalog je završen. Dalje izmjene nisu dozvoljene.
+          </div>
+        <mat-toolbar>
+          <button mat-raised-button color="accent" class="dodaj-button" (click)="dodavanjeArtikala()" *ngIf="!nalog.zavrsen">DODAJ ARTIKLE</button>
+          <span class="title-center"> Sadržaj radnog naloga </span>
+          <button mat-raised-button color="accent" class="dodaj-button" (click)="krajNaloga()" *ngIf="!nalog.zavrsen">ZAVRŠI NALOG</button>
+        </mat-toolbar>
+
+        <div class="container mat-elavation-z8">
+          </div>
+
+          <mat-table matSort [dataSource]="dataSource" class="mat-cell" matSortActive="datum" matSortDirection="desc">
+
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef> RB </mat-header-cell>
+              <mat-cell *matCellDef="let row; let i = index"> {{ i + 1}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="artikl">
+              <mat-header-cell mat-sort-header *matHeaderCellDef> Artikl </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.artikl}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="kolicina">
+              <mat-header-cell mat-sort-header *matHeaderCellDef> Količina </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.kolicina + " " + row.jedinica }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row; let i = index">
+                  <button mat-icon-button *ngIf="!nalog.zavrsen">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+            <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns"> </mat-row>
+          </mat-table>
+        </div>
+    </div>
+
+  </div>
+
+  <ng-template #nemaNalog>
+    <div class="nalog-info-placeholder">
+      🔍 Za prikaz podataka o nalogu potrebno je odabrati željeni nalog iz padajuće liste.
+    </div>
+  </ng-template>
+
+</div>

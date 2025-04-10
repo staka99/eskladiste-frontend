@@ -1,0 +1,241 @@
+.nalog-container {
+  background-color: rgb(234, 234, 234);
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+  .nalog-select {
+    width: 400px;
+  }
+
+  .label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .kreiraj-button {
+    background-color: #fbda61 !important;
+    color: black !important;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .kreiraj-button:hover {
+    background-color: #f2c200;
+  }
+
+  mat-form-field {
+    background-color: white;
+    border-radius: 4px;
+  }
+
+  mat-form-field.full-width {
+    margin-bottom: 0px;
+    padding: 0px;
+    height: 56px; /* standardna visina */
+    background-color: white;
+    border-radius: 4px;
+  }
+
+  mat-select {
+    background-color: white !important;
+  }
+
+
+  /* ----------------------- prikaz naloga --------------------------- */
+  .nalog-info-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-top: 30px;
+    width: 100%;
+    max-width: 600px;
+    font-size: 16px;
+    color: #333;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .nalog-info-container h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #444;
+  }
+
+  .nalog-info-row {
+    margin-bottom: 10px;
+  }
+
+  .nalog-info-placeholder {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #856404;
+    max-width: 100%;
+  }
+
+  .zavrsen {
+    color: green;
+    font-weight: bold;
+  }
+
+  .nezavrsen {
+    color: orange;
+    font-weight: bold;
+  }
+
+  .nalog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .action-button {
+    background-color: #fbda61 !important;
+    color: black !important;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .action-button:hover {
+    background-color: #f2c200;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
+
+
+
+
+  /* ----------------------- prikaz stavki --------------------------- */
+
+  .table {
+    padding-top: 50px;
+    padding-bottom: 60px;
+    margin: 0 auto;
+    width: 80%;
+  }
+
+  mat-cell:nth-child(1),
+  mat-header-cell:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 10%;
+  }
+
+  mat-cell:nth-child(2),
+  mat-header-cell:nth-child(2) {
+    display: flex;
+    flex: 0 0 60%;
+  }
+
+  mat-cell:nth-child(3),
+  mat-header-cell:nth-child(3) {
+    display: flex;
+    justify-content: left;
+    flex: 0 0 20%;
+  }
+
+  mat-cell:nth-child(4),
+  mat-header-cell:nth-child(4) {
+    display: flex;
+    flex: 0 0 10%;
+    justify-content: center;
+  }
+
+
+  .title-center {
+    margin: 0 auto;
+  }
+
+  .mat-toolbar {
+    background: #fbda61;
+    color: black;
+    width: 100%;
+  }
+
+  .mat-icon {
+    color: rgb(145, 145, 145);
+  }
+
+  .dodaj-button {
+    background-color: #ffffff !important;
+    color: black !important;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .dodaj-button:hover {
+    background-color: #f2c200;
+  }
+
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .table {
+      width: 80%;
+      margin-left: 10%;
+      margin-right: 10%;
+    }
+
+    .mat-toolbar {
+      padding: 0 10px;
+    }
+
+    .title-center {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .table {
+      width: 90%;
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+
+    .mat-toolbar {
+      padding: 0 5px;
+    }
+
+    .title-center {
+      font-size: 1.2rem;
+    }
+
+  }
