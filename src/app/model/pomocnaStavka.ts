@@ -1,9 +1,10 @@
+import { Artikl } from "./artikl";
 import { Nalog } from "./nalog";
 
-export class Stavka {
+export class PomocnaStavka {
   id!:number | null;
   nalog!:Nalog;
-  artikl!:string;
+  artikl!:Artikl;
   kolicina!:number | null;
   jedinica!:string;
 }

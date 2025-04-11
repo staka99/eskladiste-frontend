@@ -57,7 +57,7 @@
     </form>
 
     <div class="mat-dialog-actions">
-      <button matButton type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="ulazPostojece()" class="action-button">Dodavanje</button>
+      <button matButton type="submit" mat-dialog-close="1" [disabled]="!formControl.valid || !dataTransakcija.artikl.naziv" (click)="ulazPostojece()" class="action-button">Dodavanje</button>
       <button matButton (click)="cancel()" class="cancel-button">Odustani</button>
     </div>
 
@@ -75,6 +75,9 @@
         </mat-form-field>
       </div>
 
+      <div *ngIf="artiklPostoji(data.sifra)" style="color: red; font-size: 13px;">
+        Artikl sa ovom šifrom postoji u bazi!
+      </div>
       <div mat-dialog-content (keydown.enter)="onSubmit()">
         <div class="form">
           <mat-form-field class="form-field">
@@ -116,7 +119,7 @@
     </form>
 
     <div class="mat-dialog-actions">
-        <button matButton *ngIf="flag == 1" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="ulazNovo()" >Dodavanje</button>
+        <button matButton *ngIf="flag == 1" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid || artiklPostoji(data.sifra)" (click)="ulazNovo()" >Dodavanje</button>
         <button matButton (click)="cancel()">Odustani</button>
     </div>
   </div>
@@ -169,7 +172,7 @@
   </form>
 
   <div class="mat-dialog-actions">
-    <button matButton type="submit" mat-dialog-close="1" [disabled]="!formControl.valid || stanjeNedostupno() || prekobrojnaKolicina()" (click)="otpis()" class="action-button">Otpis</button>
+    <button matButton type="submit" mat-dialog-close="1" [disabled]="!formControl.valid || stanjeNedostupno() || prekobrojnaKolicina() || !dataTransakcija.artikl.naziv" (click)="otpis()" class="action-button">Otpis</button>
     <button matButton (click)="cancel()" class="cancel-button">Odustani</button>
   </div>
 </div>

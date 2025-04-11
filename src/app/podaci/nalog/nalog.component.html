@@ -7,6 +7,9 @@
           <mat-option [value]="null">-</mat-option>
           <mat-option *ngFor="let nalog of nalozi" [value]="nalog">
             {{ nalog.broj + " " + nalog.kupac?.naziv }}
+            <span [class.zavrsen-select]="nalog.zavrsen" [class.nezavrsen-select]="!nalog.zavrsen">
+              {{ nalog.zavrsen ? '(Završen)' : '(U izradi)' }}
+            </span>
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -44,7 +47,7 @@
             Nalog je završen. Dalje izmjene nisu dozvoljene.
           </div>
         <mat-toolbar>
-          <button mat-raised-button color="accent" class="dodaj-button" (click)="dodavanjeArtikala()" *ngIf="!nalog.zavrsen">DODAJ ARTIKLE</button>
+          <button mat-raised-button color="accent" class="dodaj-button" (click)="openDialogStavka(1)" *ngIf="!nalog.zavrsen">DODAJ ARTIKLE</button>
           <span class="title-center"> Sadržaj radnog naloga </span>
           <button mat-raised-button color="accent" class="dodaj-button" (click)="krajNaloga()" *ngIf="!nalog.zavrsen">ZAVRŠI NALOG</button>
         </mat-toolbar>
@@ -73,7 +76,7 @@
                 <mat-header-cell *matHeaderCellDef>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row; let i = index">
-                  <button mat-icon-button *ngIf="!nalog.zavrsen">
+                  <button mat-icon-button *ngIf="!nalog.zavrsen" (click)="openDialogStavka(3, row.id, row.artikl, row.kolicina)">
                     <mat-icon>delete</mat-icon>
                   </button>
                 </mat-cell>

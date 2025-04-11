@@ -133,6 +133,10 @@ export class ArtiklDijalogComponent implements OnInit {
     );
   }
 
+  artiklPostoji(sifra: string): boolean {
+    return this.artikli.some(a => a.sifra === sifra);
+  }
+
   public ulazPostojece() {
     if (this.dataTransakcija.artikl && this.dataTransakcija.kolicina) {
       console.log(this.dataTransakcija.artikl);

@@ -101,6 +101,16 @@
     font-weight: bold;
   }
 
+  .zavrsen-select {
+    color: green;
+    font-size: small;
+  }
+
+  .nezavrsen-select  {
+    color: orange;
+    font-size: small;
+  }
+
   .nalog-actions {
     display: flex;
     justify-content: flex-end;
@@ -189,10 +199,6 @@
     background-color: #ffffff !important;
     color: black !important;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  .dodaj-button:hover {
-    background-color: #f2c200;
   }
 
 

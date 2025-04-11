@@ -16,6 +16,8 @@ import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { StavkaDijalogComponent } from '../../dijalozi/stavka-dijalog/stavka-dijalog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-nalog',
@@ -40,7 +42,8 @@ export class NalogComponent implements OnInit {
     constructor(
       public snackBar:MatSnackBar,
       public service:NalogService,
-      public stavkaService:StavkaService
+      public stavkaService:StavkaService,
+      public dialog:MatDialog
     ) {}
 
 
@@ -91,6 +94,19 @@ export class NalogComponent implements OnInit {
       filter = filter.trim();
       filter = filter.toLocaleLowerCase();
       this.dataSource.filter = filter;
+    }
+
+    public openDialogStavka(flag:number, id?:number, artikl?:String, kolicina?:number ) {
+      const dialogRef = this.dialog.open(StavkaDijalogComponent, {data : { id, artikl, kolicina }});
+         dialogRef.componentInstance.flag = flag;
+         dialogRef.componentInstance.nalog = this.nalog;
+         dialogRef.afterClosed().subscribe(
+           (result) => {
+             if(result==1) {
+               this.loadData();
+             }
+           }
+        )
     }
 
     dodavanjeArtikala() {

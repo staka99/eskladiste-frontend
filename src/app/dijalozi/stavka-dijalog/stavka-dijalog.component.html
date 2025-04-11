@@ -1,0 +1,62 @@
+<div class="container"  *ngIf="flag == 1">
+  <h3 mat-dialog-title *ngIf="flag == 1">Dodavanje artikla u radni nalog</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+
+      <div class="form">
+        <mat-select [compareWith]="compare" placeholder="Odaberite artikl" name="artikl" [(ngModel)]="dataStavka.artikl" required >
+          <mat-option *ngFor="let artikl of artikli" [value]="artikl">
+            {{ artikl.sifra + " - " + artikl.naziv }}
+          </mat-option>
+        </mat-select>
+      </div>
+
+      <div class="form" *ngIf="stanjeNedostupno()" style="color: red; font-size: 13px;">
+        Artikla trenutno nema na stanju. Izlaz nije moguć!
+      </div>
+
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput type="number" min="0.000001" [max]="dataStavka.artikl.stanje" placeholder="Količina otpisa" name="kolicina" [disabled]="stanjeNedostupno()" [(ngModel)]="dataStavka.kolicina" required />
+          <mat-icon matSuffix>{{ dataStavka.artikl.jedinica }}</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="prekobrojnaKolicina()" style="color: red; font-size: 13px;">
+        Trenutna količina ovog artikla u skladištu je: {{ dataStavka.artikl.stanje }}.
+      </div>
+    </form>
+
+    <div class="mat-dialog-actions">
+      <button matButton type="submit" mat-dialog-close="1" [disabled]="!formControl.valid || stanjeNedostupno() || prekobrojnaKolicina() || !dataStavka.artikl.naziv" (click)="add()" class="action-button">Dodavanje</button>
+      <button matButton (click)="cancel()" class="cancel-button">Odustani</button>
+    </div>
+</div>
+
+
+<div class="container"  *ngIf="flag == 3">
+  <h3 mat-dialog-title *ngIf="flag == 3">Brisanje artikala iz radnog naloga</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+
+    <div class="form">
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Artikl" name="artikl" [disabled]="flag == 3" [(ngModel)]="data.artikl" />
+      </mat-form-field>
+    </div>
+
+    Količina:
+
+    <div class="form">
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Količina" name="kolicina" [disabled]="flag == 3" [(ngModel)]="data.kolicina" />
+      </mat-form-field>
+    </div>
+
+    </form>
+
+    <div class="mat-dialog-actions">
+      <button matButton type="submit" mat-dialog-close="1" (click)="delete()" class="action-button">Brisanje</button>
+      <button matButton (click)="cancel()" class="cancel-button">Odustani</button>
+    </div>
+</div>
