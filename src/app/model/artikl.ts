@@ -4,4 +4,5 @@ export class Artikl {
   naziv!:string;
   jedinica!:string;
   stanje!:number;
+  imaAktivnihStavki?: boolean;
 }

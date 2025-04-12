@@ -26,6 +26,7 @@
 
   <mat-toolbar>
     <span class="title-center"> Lista artikala </span>
+    <button mat-raised-button class="pdf-button" color="primary" (click)="exportToPDF()">PREUZMI PDF</button>
   </mat-toolbar>
 
   <div class="container mat-elavation-z8">
@@ -65,9 +66,16 @@
         <button mat-icon-button (click)="openDialog(3, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button *ngIf="row.stanje == 0" (click)="openDialog(4, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)">
-          <mat-icon class="delete-icon">delete</mat-icon>
-        </button>
+        <span *ngIf="row.stanje == 0" [matTooltip]="row.imaAktivnihStavki ? 'Artikl postoji u radnom nalogu koji nije završen. Tek kada završite nalog, možete obrisati ovaj artikl.' : ''">
+          <button
+            mat-icon-button
+            color="warn"
+            class="action-button"
+            (click)="openDialog(4, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)"
+            [disabled]="row.imaAktivnihStavki">
+            <mat-icon class="delete-icon">delete</mat-icon>
+          </button>
+        </span>
       </mat-cell>
     </ng-container>
 

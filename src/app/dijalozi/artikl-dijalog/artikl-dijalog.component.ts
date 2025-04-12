@@ -108,7 +108,7 @@ export class ArtiklDijalogComponent implements OnInit {
         this.dataTransakcija.artikl = data;
 
         this.transakcija.datum = this.dataTransakcija.datum;
-        this.transakcija.opis = "Ulaz novog artikla: " + this.data.naziv + "; " + this.dataTransakcija.opis;
+        this.transakcija.opis = "Ulaz novog artikla: " + this.data.naziv + " (" + this.data.sifra + "); " + this.dataTransakcija.opis;
         this.transakcija.novoStanje = this.data.stanje;
         this.transakcija.kolicina = this.data.stanje;
         this.transakcija.artikl = this.data.sifra + " - " + this.data.naziv;
@@ -141,7 +141,7 @@ export class ArtiklDijalogComponent implements OnInit {
     if (this.dataTransakcija.artikl && this.dataTransakcija.kolicina) {
       console.log(this.dataTransakcija.artikl);
       this.transakcija.datum = this.dataTransakcija.datum;
-      this.transakcija.opis = "Ulaz artikla: " + this.dataTransakcija.opis;
+      this.transakcija.opis = "Ulaz artikla: " + this.dataTransakcija.artikl.naziv + " (" + this.dataTransakcija.artikl.sifra + "); " + this.dataTransakcija.opis;
       this.transakcija.novoStanje = this.dataTransakcija.artikl.stanje + this.dataTransakcija.kolicina;
       this.transakcija.kolicina = this.dataTransakcija.kolicina;
       this.transakcija.artikl = this.dataTransakcija.artikl.sifra + " - " + this.dataTransakcija.artikl.naziv;

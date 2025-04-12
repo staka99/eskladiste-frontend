@@ -38,6 +38,7 @@
         <div class="table">
           <div class="nalog-info-placeholder" *ngIf="nalog.zavrsen">
             Nalog je završen. Dalje izmjene nisu dozvoljene.
+            <button mat-raised-button class="pdf-button" color="primary" (click)="exportToPDF()">PREUZMI PDF</button>
           </div>
         <mat-toolbar>
           <span class="title-center"> Sadržaj radnog naloga </span>

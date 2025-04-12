@@ -17,7 +17,7 @@
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput type="number" min="0.000001" [max]="dataStavka.artikl.stanje" placeholder="Količina otpisa" name="kolicina" [disabled]="stanjeNedostupno()" [(ngModel)]="dataStavka.kolicina" required />
+          <input matInput type="number" min="0.000001" [max]="dataStavka.artikl.stanje" placeholder="Količina izlaza" name="kolicina" [disabled]="stanjeNedostupno()" [(ngModel)]="dataStavka.kolicina" required />
           <mat-icon matSuffix>{{ dataStavka.artikl.jedinica }}</mat-icon>
         </mat-form-field>
       </div>

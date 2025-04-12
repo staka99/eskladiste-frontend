@@ -19,6 +19,10 @@ export class StavkaService {
     return this.httpClient.get<Stavka>(`${STAVKA_URL}/${stavkaId}`);
   }
 
+  public getBySifra(sifra:string):Observable<any> {
+    return this.httpClient.get(`${STAVKA_URL}/sifra/${sifra}`);
+  }
+
   public addStavka(stavka:Stavka):Observable<any>{
     return this.httpClient.post(`${STAVKA_URL}`, stavka);
   }

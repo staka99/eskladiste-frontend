@@ -58,6 +58,7 @@
         <mat-toolbar>
           <button mat-raised-button color="accent" class="dodaj-button" (click)="openDialogStavka(1)" *ngIf="!nalog.zavrsen">DODAJ ARTIKLE</button>
           <span class="title-center"> Sadržaj radnog naloga </span>
+          <button mat-raised-button class="pdf-button" color="primary" (click)="exportToPDF()">PREUZMI PDF</button>
           <button mat-raised-button color="accent" class="dodaj-button" (click)="openDialogNalog(4, nalog.id!, nalog.broj!, nalog.kupac!)" *ngIf="!nalog.zavrsen">ZAVRŠI NALOG</button>
         </mat-toolbar>
 
