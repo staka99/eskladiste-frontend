@@ -1,34 +1,34 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Nalog } from '../../model/nalog';
-import { NalogService } from '../../service/nalog.service';
-import { CommonModule } from '@angular/common';
-import { StavkaService } from '../../service/stavka.service';
-import { Stavka } from '../../model/stavka';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Subscription } from 'rxjs';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { MatSortModule, MatSort } from '@angular/material/sort';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { StavkaDijalogComponent } from '../../dijalozi/stavka-dijalog/stavka-dijalog.component';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Kupac } from '../../model/kupac';
+import { Subscription } from 'rxjs';
 import { NalogDijalogComponent } from '../../dijalozi/nalog-dijalog/nalog-dijalog.component';
+import { StavkaDijalogComponent } from '../../dijalozi/stavka-dijalog/stavka-dijalog.component';
+import { Kupac } from '../../model/kupac';
+import { Nalog } from '../../model/nalog';
+import { Stavka } from '../../model/stavka';
+import { NalogService } from '../../service/nalog.service';
+import { StavkaService } from '../../service/stavka.service';
 
 @Component({
-  selector: 'app-nalog',
+  selector: 'app-nalozi-u-izradi',
   imports: [CommonModule, MatFormFieldModule, MatTableModule, MatToolbarModule, MatTooltipModule, MatIconModule, MatButtonModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatPaginatorModule, MatSortModule],
-  templateUrl: './nalog.component.html',
-  styleUrl: './nalog.component.css'
+  templateUrl: './nalozi-u-izradi.component.html',
+  styleUrl: './nalozi-u-izradi.component.css'
 })
-export class NalogComponent implements OnInit {
+export class NaloziUIzradiComponent implements OnInit {
 
     nalozi!: Nalog[];
     nalog!: Nalog;
@@ -51,7 +51,7 @@ export class NalogComponent implements OnInit {
 
 
     ngOnInit(): void {
-      this.service.getAllNalozi().subscribe((data) => {
+      this.service.getNaloziUizradi().subscribe((data) => {
         this.nalozi = data;
       });
       this.loadData();
@@ -71,7 +71,7 @@ export class NalogComponent implements OnInit {
             if (result === 1) {
               // osvežavanje rezultata za prikaz
               if(flag===1) {
-                this.service.getAllNalozi().subscribe((data) => {
+                this.service.getNaloziUizradi().subscribe((data) => {
                   this.nalozi = data;
 
                   // Pretpostavka: poslednji je najnoviji
@@ -80,7 +80,7 @@ export class NalogComponent implements OnInit {
                 });
               }
 
-              this.service.getAllNalozi().subscribe((data) => {
+              this.service.getNaloziUizradi().subscribe((data) => {
                 this.nalozi = data;
 
                 if (this.nalog?.id) {

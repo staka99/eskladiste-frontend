@@ -37,6 +37,7 @@ export class StavkaDijalogComponent {
   public stavka: Stavka = {
     id: null,
     nalog: new Nalog(),
+    sifra: "",
     artikl: "",
     kolicina: null,
     jedinica: ""
@@ -66,14 +67,15 @@ export class StavkaDijalogComponent {
     if (this.flag == 1) {
       this.add();
     } else if (this.flag == 3) {
-      this.delete();
+      //this.delete();
     }
   }
 
   public add() {
     if (this.dataStavka.artikl && this.dataStavka.kolicina) {
       console.log(this.dataStavka.artikl);
-      this.stavka.artikl = this.dataStavka.artikl.sifra + " - " + this.dataStavka.artikl.naziv;
+      this.stavka.sifra = this.dataStavka.artikl.sifra;
+      this.stavka.artikl = this.dataStavka.artikl.naziv;
       this.stavka.kolicina = this.dataStavka.kolicina;
       this.stavka.jedinica = this.dataStavka.artikl.jedinica;
       this.stavka.nalog = this.nalog;
@@ -122,20 +124,49 @@ export class StavkaDijalogComponent {
 
   // -------------------- brisanje -----------------------------
 
-  public delete() {
-    if(this.data.id) {
-      this.service.deleteStavka(this.data.id).subscribe({
-        next: (data) => {
-          this.snackBar.open(`Podaci su uspješno obrisani!`, `OK`, { duration: 2500 });
-          this.dialogRef.close(1);
-        },
-        error: (error: Error) => {
-          console.error('Greška prilikom brisanja:', error);
-          this.snackBar.open(`Neuspješno brisanje`, `OK`, { duration: 2500 });
-        },
-      });
-    }
+  public delete(sifra: string) {
+    //console.log(this.data.sifra);
+    //console.log(sifra);
+    this.artiklService.getBySifra(this.data.sifra).subscribe({
+      next: (artikli: Artikl[]) => {
+        console.log(artikli);
+        const artikl = artikli[0];
+
+        if (!artikl) {
+          this.snackBar.open(`Artikl nije pronađen`, `OK`, { duration: 2500 });
+          return;
+        }
+
+        artikl.stanje += this.data.kolicina!;
+
+        this.artiklService.updateArtikl(artikl).subscribe({
+          next: () => {
+            if (this.data.id) {
+              this.service.deleteStavka(this.data.id).subscribe({
+                next: () => {
+                  this.snackBar.open(`Podaci su uspješno obrisani!`, `OK`, { duration: 2500 });
+                  this.dialogRef.close(1);
+                },
+                error: (error: Error) => {
+                  console.error('Greška prilikom brisanja:', error);
+                  this.snackBar.open(`Neuspješno brisanje`, `OK`, { duration: 2500 });
+                }
+              });
+            }
+          },
+          error: (error: Error) => {
+            console.error('Greška prilikom ažuriranja artikla:', error);
+            this.snackBar.open(`Greška pri ažuriranju stanja artikla`, `OK`, { duration: 2500 });
+          }
+        });
+      },
+      error: (error: Error) => {
+        console.error('Greška prilikom dohvaćanja artikla:', error);
+        this.snackBar.open(`Artikl nije pronađen`, `OK`, { duration: 2500 });
+      }
+    });
   }
+
 
   public cancel() {
     this.dialogRef.close();

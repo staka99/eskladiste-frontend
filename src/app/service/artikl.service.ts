@@ -19,6 +19,10 @@ export class ArtiklService {
     return this.httpClient.get<Artikl>(`${ARTIKL_URL}/${artiklId}`);
   }
 
+  public getBySifra(sifra:string):Observable<any> {
+    return this.httpClient.get(`${ARTIKL_URL}/sifra/${sifra}`);
+  }
+
   public addArtikl(artikl:Artikl):Observable<any>{
     return this.httpClient.post(`${ARTIKL_URL}`, artikl);
   }

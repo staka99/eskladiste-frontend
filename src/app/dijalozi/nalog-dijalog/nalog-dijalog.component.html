@@ -1,1 +1,39 @@
-<p>nalog-dijalog works!</p>
+<div class="container" *ngIf="flag != 4">
+  <h3 mat-dialog-title *ngIf="flag == 1">Otvaranje radnog naloga</h3>
+  <h3 mat-dialog-title *ngIf="flag == 2">Izmjena podataka o radnom nalogu</h3>
+  <h3 mat-dialog-title *ngIf="flag == 3">Brisanje radnog naloga</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+    <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Broj radnog naloga" name="broj" [disabled]="flag == 3" [(ngModel)]="data.broj" required/>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form">
+      <mat-select [compareWith]="compare" placeholder="Odaberite kupca" name="kupac" [disabled]="flag == 3" [(ngModel)]="data.kupac" required >
+        <mat-option *ngFor="let kupac of kupci" [value]="kupac" required>
+          {{ kupac.naziv + ", " + kupac.grad }}
+        </mat-option>
+      </mat-select>
+    </div>
+
+  </form>
+
+  <div class="mat-dialog-actions">
+      <button matButton *ngIf="flag == 1" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="add()" >Dodavanje</button>
+      <button matButton *ngIf="flag == 2" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="update()">Izmjena</button>
+      <button matButton *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Brisanje</button>
+      <button matButton (click)="cancel()">Odustani</button>
+  </div>
+</div>
+
+<div class="container" *ngIf="flag == 4">
+  <h3 mat-dialog-title *ngIf="flag == 4">Da li ste sigurni da želite završiti ovaj radni nalog?</h3>
+  <div class="mat-dialog-actions">
+    <button matButton mat-dialog-close="1" (click)="zavrsi()">Da</button>
+    <button matButton (click)="cancel()">Ne</button>
+</div>
+</div>

@@ -1,7 +1,7 @@
 import { NALOG_URL } from './../../constants';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { Observable } from "rxjs";
+import { map, Observable } from "rxjs";
 import { Nalog } from '../model/nalog';
 
 @Injectable({
@@ -13,6 +13,17 @@ export class NalogService {
 
   public getAllNalozi():Observable<any> {
     return this.httpClient.get(`${NALOG_URL}`);
+  }
+  getNaloziUizradi(): Observable<Nalog[]> {
+    return this.httpClient.get<Nalog[]>(`${NALOG_URL}`).pipe(
+      map(nalozi => nalozi.filter(n => !n.zavrsen))
+    );
+  }
+
+  getZavrseniNalozi(): Observable<Nalog[]> {
+    return this.httpClient.get<Nalog[]>(`${NALOG_URL}`).pipe(
+      map(nalozi => nalozi.filter(n => n.zavrsen))
+    );
   }
 
   public getOneNalog(nalogId:number):Observable<Nalog>{
