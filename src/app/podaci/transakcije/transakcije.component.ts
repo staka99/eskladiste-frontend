@@ -14,10 +14,11 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { Artikl } from '../../model/artikl';
 import { TransakcijaDijalogComponent } from '../../dijalozi/transakcija-dijalog/transakcija-dijalog.component';
 import { Transakcija } from '../../model/transakcija';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-transakcije',
-  imports: [CommonModule, MatToolbarModule, MatTableModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule],
+  imports: [CommonModule, MatToolbarModule, MatTableModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTooltipModule],
   templateUrl: './transakcije.component.html',
   styleUrl: './transakcije.component.css'
 })

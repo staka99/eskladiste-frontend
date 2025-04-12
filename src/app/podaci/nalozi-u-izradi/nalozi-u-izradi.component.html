@@ -1,7 +1,7 @@
 <div class="nalog-container">
   <div class="top-bar">
     <div class="nalog-select">
-      <label class="label">Odaberite radni nalog za prikaz:</label>
+      <label class="label">Odaberite otvoreni radni nalog za prikaz i dalju izradu:</label>
       <mat-form-field appearance="outline" class="full-width">
         <mat-select [compareWith]="compare" placeholder="Odaberite nalog" name="nalog" [(ngModel)]="nalog"  (ngModelChange)="loadData()" required>
           <mat-option [value]="null">-</mat-option>
@@ -33,7 +33,6 @@
           {{ nalog.zavrsen ? 'Završen' : 'U izradi' }}
         </span>
       </div>
-      <div class="nalog-info-row" *ngIf="nalog.zavrsen"><strong>Datum:</strong> {{ nalog.datum | date: 'dd.MM.yyyy' }}</div>
 
       <div class="nalog-actions">
         <button mat-raised-button color="accent" class="action-button" (click)="openDialogNalog(2, nalog.id!, nalog.broj, nalog.kupac!)" *ngIf="!nalog.zavrsen">IZMIJENI PODATKE</button>
@@ -49,16 +48,13 @@
             </button>
           </span>
         </ng-container>
-
       </div>
+
     </div>
 
     <!--------- Prikaz stavki za određeni nalog --------------->
     <div class="tabela">
         <div class="table">
-          <div class="nalog-info-placeholder" *ngIf="nalog.zavrsen">
-            Nalog je završen. Dalje izmjene nisu dozvoljene.
-          </div>
         <mat-toolbar>
           <button mat-raised-button color="accent" class="dodaj-button" (click)="openDialogStavka(1)" *ngIf="!nalog.zavrsen">DODAJ ARTIKLE</button>
           <span class="title-center"> Sadržaj radnog naloga </span>

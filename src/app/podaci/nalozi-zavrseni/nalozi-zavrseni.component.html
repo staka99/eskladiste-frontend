@@ -14,10 +14,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-
-    <div class="nalog-button">
-      <button mat-raised-button color="warn" class="kreiraj-button" (click)="openDialogNalog(1)">OTVORI NOVI RADNI NALOG</button>
-    </div>
   </div>
 
   <div *ngIf="nalog; else nemaNalog">
@@ -35,22 +31,6 @@
       </div>
       <div class="nalog-info-row" *ngIf="nalog.zavrsen"><strong>Datum:</strong> {{ nalog.datum | date: 'dd.MM.yyyy' }}</div>
 
-      <div class="nalog-actions">
-        <button mat-raised-button color="accent" class="action-button" (click)="openDialogNalog(2, nalog.id!, nalog.broj, nalog.kupac!)" *ngIf="!nalog.zavrsen">IZMIJENI PODATKE</button>
-        <ng-container *ngIf="!nalog.zavrsen">
-          <span [matTooltip]="dataSource.data ? 'Brisanje nije moguće dok u radnom nalogu postoje artikli! Obrišite artikle iz radnog naloga ukoliko želite obrisati nalog.' : ''">
-            <button
-              mat-raised-button
-              color="warn"
-              class="action-button"
-              (click)="openDialogNalog(3, nalog.id!, nalog.broj, nalog.kupac!)"
-              [disabled]="dataSource.data">
-              OBRIŠI
-            </button>
-          </span>
-        </ng-container>
-
-      </div>
     </div>
 
     <!--------- Prikaz stavki za određeni nalog --------------->
@@ -60,9 +40,7 @@
             Nalog je završen. Dalje izmjene nisu dozvoljene.
           </div>
         <mat-toolbar>
-          <button mat-raised-button color="accent" class="dodaj-button" (click)="openDialogStavka(1)" *ngIf="!nalog.zavrsen">DODAJ ARTIKLE</button>
           <span class="title-center"> Sadržaj radnog naloga </span>
-          <button mat-raised-button color="accent" class="dodaj-button" (click)="openDialogNalog(4, nalog.id!, nalog.broj!, nalog.kupac!)" *ngIf="!nalog.zavrsen">ZAVRŠI NALOG</button>
         </mat-toolbar>
 
         <div class="container mat-elavation-z8">
@@ -89,9 +67,6 @@
                 <mat-header-cell *matHeaderCellDef>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row; let i = index">
-                  <button mat-icon-button *ngIf="!nalog.zavrsen" (click)="openDialogStavka(3, row.id, row.sifra, row.artikl, row.kolicina)">
-                    <mat-icon>delete</mat-icon>
-                  </button>
                 </mat-cell>
             </ng-container>
 

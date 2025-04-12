@@ -60,9 +60,15 @@
         <mat-header-cell *matHeaderCellDef>
         </mat-header-cell>
         <mat-cell *matCellDef="let row; let i = index">
-          <button mat-icon-button (click)="openDialog(3, row.id, row.datum, row.opis, row.artikl, row.kolicina, row.novoStanje)">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <span [matTooltip]="dataSource ? 'UPOZORENJE! Brisanje transakcije vrši se samo u slučaju greške!' : ''">
+            <button
+              mat-raised-button
+              color="warn"
+              class="action-button"
+              (click)="openDialog(3, row.id, row.datum, row.opis, row.artikl, row.kolicina, row.novoStanje)">
+              <mat-icon> delete </mat-icon>
+            </button>
+          </span>
         </mat-cell>
       </ng-container>
 

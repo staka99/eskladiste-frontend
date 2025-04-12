@@ -61,37 +61,6 @@ export class NaloziZavrseniComponent implements OnInit {
     return a.id == b.id;
   }
 
-  // -------------- 01 - Nalozi -----------------
-
-  public openDialogNalog(flag:number, id?:number, broj?:String, kupac?:Kupac ) {
-    const dialogRef = this.dialog.open(NalogDijalogComponent, {data : { id, broj, kupac }});
-       dialogRef.componentInstance.flag = flag;
-       dialogRef.afterClosed().subscribe(
-         (result) => {
-          if (result === 1) {
-            // osvežavanje rezultata za prikaz
-            if(flag===1) {
-              this.service.getZavrseniNalozi().subscribe((data) => {
-                this.nalozi = data;
-
-                // Pretpostavka: poslednji je najnoviji
-                this.nalog = this.nalozi[this.nalozi.length - 1];
-                this.loadData();
-              });
-            }
-
-            this.service.getZavrseniNalozi().subscribe((data) => {
-              this.nalozi = data;
-
-              if (this.nalog?.id) {
-                this.nalog = this.nalozi.find(n => n.id === this.nalog.id)!;
-                this.loadData();
-              }
-            });
-          }
-        });
-      }
-
 
   // -------------- 02 - Stavke -----------------
   public loadData() {
@@ -116,17 +85,5 @@ export class NaloziZavrseniComponent implements OnInit {
     this.dataSource.filter = filter;
   }
 
-  public openDialogStavka(flag:number, id?:number, sifra?:String, artikl?:String, kolicina?:number ) {
-    const dialogRef = this.dialog.open(StavkaDijalogComponent, {data : { id, sifra, artikl, kolicina }});
-       dialogRef.componentInstance.flag = flag;
-       dialogRef.componentInstance.nalog = this.nalog;
-       dialogRef.afterClosed().subscribe(
-         (result) => {
-           if(result==1) {
-             this.loadData();
-           }
-         }
-      )
-  }
 
 }
