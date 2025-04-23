@@ -54,10 +54,16 @@ export class NaloziZavrseniComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.service.getZavrseniNalozi().subscribe((data) => {
-      this.nalozi = data;
-    });
-    this.loadData();
+
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.service.getZavrseniNalozi(companyId).subscribe((data) => {
+        this.nalozi = data;
+      });
+      this.loadData();
+    }
   }
 
   public compare(a:any, b:any) {

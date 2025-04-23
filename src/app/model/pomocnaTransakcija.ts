@@ -1,4 +1,5 @@
 import { Artikl } from "./artikl";
+import { Company } from "./company";
 
 export class PomocnaTransakcija {
   id!:number | null;
@@ -8,4 +9,5 @@ export class PomocnaTransakcija {
   opis!:string;
   artikl!:Artikl;
   jedinica!:string;
+  company?:Company;
 }

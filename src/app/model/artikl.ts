@@ -1,3 +1,5 @@
+import { Company } from "./company";
+
 export class Artikl {
   id!:number;
   sifra!:string;
@@ -5,4 +7,5 @@ export class Artikl {
   jedinica!:string;
   stanje!:number;
   imaAktivnihStavki?: boolean;
+  company?:Company;
 }

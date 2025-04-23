@@ -53,10 +53,15 @@ export class StavkaDijalogComponent {
   ) {}
 
   ngOnInit(): void {
-    this.artiklService.getAllArtikli().subscribe((data) => {
-      this.artikli = data;
-    });
-    this.getArtikli();
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.artiklService.getArtikliByCompany(companyId).subscribe((data) => {
+        this.artikli = data;
+      });
+      this.getArtikli();
+    }
   }
 
   public compare(a:any, b:any) {
@@ -125,17 +130,22 @@ export class StavkaDijalogComponent {
   // -------------------- brisanje -----------------------------
 
   public delete(sifra: string) {
-    //console.log(this.data.sifra);
-    //console.log(sifra);
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId === null) {
+      this.snackBar.open(`Greška sa učitavanjem kompanije.`, `OK`, { duration: 2500 });
+      return;
+    }
+
     this.artiklService.getBySifra(this.data.sifra).subscribe({
       next: (artikli: Artikl[]) => {
-        console.log(artikli);
-        const artikl = artikli[0];
+      const artikl = artikli.find(a => a.company?.id === companyId);
 
-        if (!artikl) {
-          this.snackBar.open(`Artikl nije pronađen`, `OK`, { duration: 2500 });
-          return;
-        }
+      if (!artikl) {
+        this.snackBar.open(`Artikl nije pronađen za vašu kompaniju`, `OK`, { duration: 2500 });
+        return;
+      }
 
         artikl.stanje += this.data.kolicina!;
 
@@ -177,9 +187,14 @@ export class StavkaDijalogComponent {
   // -------------------- artikli -----------------------------
 
   getArtikli() {
-    this.artiklService.getAllArtikli().subscribe((artikli: Artikl[]) => {
-      this.artikli = this.sortArtikliBySifra(artikli);
-    });
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.artiklService.getArtikliByCompany(companyId).subscribe((artikli: Artikl[]) => {
+        this.artikli = this.sortArtikliBySifra(artikli);
+      });
+    }
   }
 
   sortArtikliBySifra(artikli: Artikl[]): Artikl[] {

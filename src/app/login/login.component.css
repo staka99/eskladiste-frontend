@@ -1,0 +1,295 @@
+/* ------------ Image Content (Background) ------------- */
+.image-content {
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.2)), center;
+  background-size: cover;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+/* ------------ Form Container ------------ */
+.form-container {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  max-width: 1000px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 10px 30px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 auto;
+}
+
+.form-container:hover {
+  transform: scale(1.05);
+  box-shadow: 10px 30px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Left side of the form - Image */
+.form-left {
+  position: relative;
+  overflow: hidden;
+  width: 50%;
+}
+
+.form-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Right side of the form - Input Form */
+.form-right {
+  width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-title {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+}
+
+/* Form container */
+.form-right form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-top: 16px;
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #928b8b;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(194, 194, 194, 0.7);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #ffd748;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 50px;
+}
+
+button:hover {
+  background-color: #f1cb41;
+  transform: translateY(-2px);
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ------------------ Responsive design ------------------ */
+
+/* 1024px */
+@media (max-width: 1024px) {
+  .form-container {
+    flex-direction: column;
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    margin-bottom: 30px;
+  }
+
+  .form-left, .form-right {
+    width: 100%;
+  }
+
+  .form-left img {
+    object-fit: cover;
+    height: auto;
+    max-height: 300px;
+    width: 100%;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .form-right {
+    padding: 30px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 15px;
+  }
+}
+
+/* 768px */
+@media (max-width: 768px) {
+  .form-container {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-left, .form-right {
+    width:100%;
+  }
+
+  .form-left img {
+    object-fit: cover;
+    height: auto;
+    max-height: 350px;
+    width: 100%;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .form-right {
+    padding: 30px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input {
+    font-size: 15px;
+  }
+
+  button {
+    font-size: 15px;
+  }
+}
+
+/* 540px */
+@media (max-width: 540px) {
+  .form-container {
+    width: 95%;
+    padding: 10px;
+    flex-direction: column;
+    margin-top: 20px;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-left, .form-right {
+    width: 100%;
+  }
+
+  .form-left img {
+    object-fit: cover;
+    height: auto;
+    max-height: 200px;
+    width: 100%;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* 480px */
+@media (max-width: 480px) {
+  .form-container {
+    width: 90%;
+    padding: 10px;
+    flex-direction: column;
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+    margin-bottom: 100px;
+  }
+
+  .form-left, .form-right {
+    width: 100%;
+  }
+
+  .form-left img {
+    object-fit: cover;
+    height: auto;
+    max-height: 250px;
+    width: 100%;
+  }
+
+  .main-title {
+    font-size: 1.8rem;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}

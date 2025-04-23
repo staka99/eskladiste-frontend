@@ -43,16 +43,21 @@ export class KupciComponent implements OnInit, OnDestroy{
   }
 
   public loadData() {
-    this.subsription = this.service.getAllKupac().subscribe({
-      next: (data) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-      },
-      error: (error: Error) => {
-        console.log(error.name + ' ' + error.message);
-      }
-    });
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.subsription = this.service.getKupciByCompany(companyId).subscribe({
+        next: (data) => {
+          this.dataSource = new MatTableDataSource(data);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        },
+        error: (error: Error) => {
+          console.log(error.name + ' ' + error.message);
+        }
+      });
+    }
   }
 
   public applyFilter(filter: any) {

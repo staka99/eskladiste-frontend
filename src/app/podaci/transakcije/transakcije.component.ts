@@ -67,17 +67,24 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
   }
 
   public loadData() {
-    this.subsription = this.service.getAllTransakcija().subscribe({
-      next: (data) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
-        this.applyDateFilter();
-      },
-      error: (error: Error) => {
-        console.log(error.name + ' ' + error.message);
-      }
-    });
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.subsription = this.service.getTransakcijaByCompany(companyId).subscribe({
+        next: (data) => {
+          this.dataSource = new MatTableDataSource(data);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+          setTimeout(() => {
+          this.applyDateFilter();
+          })
+        },
+        error: (error: Error) => {
+          console.log(error.name + ' ' + error.message);
+        }
+      });
+    }
   }
 
 

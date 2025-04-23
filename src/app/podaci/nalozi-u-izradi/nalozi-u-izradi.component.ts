@@ -54,10 +54,15 @@ export class NaloziUIzradiComponent implements OnInit {
 
 
     ngOnInit(): void {
-      this.service.getNaloziUizradi().subscribe((data) => {
-        this.nalozi = data;
-      });
-      this.loadData();
+      const companyIdStr = localStorage.getItem('company');
+      const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+      if (companyId !== null && !isNaN(companyId)) {
+        this.service.getNaloziUizradi(companyId).subscribe((data) => {
+          this.nalozi = data;
+        });
+        this.loadData();
+      }
     }
 
     public compare(a:any, b:any) {
@@ -74,23 +79,34 @@ export class NaloziUIzradiComponent implements OnInit {
             if (result === 1) {
               // osvežavanje rezultata za prikaz
               if(flag===1) {
-                this.service.getNaloziUizradi().subscribe((data) => {
-                  this.nalozi = data;
 
-                  // Pretpostavka: poslednji je najnoviji
-                  this.nalog = this.nalozi[this.nalozi.length - 1];
-                  this.loadData();
-                });
+                const companyIdStr = localStorage.getItem('company');
+                const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+                if (companyId !== null && !isNaN(companyId)) {
+                  this.service.getNaloziUizradi(companyId).subscribe((data) => {
+                    this.nalozi = data;
+
+                    // Pretpostavka: poslednji je najnoviji
+                    this.nalog = this.nalozi[this.nalozi.length - 1];
+                    this.loadData();
+                  });
+                }
               }
 
-              this.service.getNaloziUizradi().subscribe((data) => {
-                this.nalozi = data;
+              const companyIdStr = localStorage.getItem('company');
+              const companyId = companyIdStr ? Number(companyIdStr) : null;
 
-                if (this.nalog?.id) {
-                  this.nalog = this.nalozi.find(n => n.id === this.nalog.id)!;
-                  this.loadData();
-                }
-              });
+              if (companyId !== null && !isNaN(companyId)) {
+                this.service.getNaloziUizradi(companyId).subscribe((data) => {
+                  this.nalozi = data;
+
+                  if (this.nalog?.id) {
+                    this.nalog = this.nalozi.find(n => n.id === this.nalog.id)!;
+                    this.loadData();
+                  }
+                });
+              }
             }
           });
         }
@@ -154,7 +170,7 @@ export class NaloziUIzradiComponent implements OnInit {
         doc.text(`Broj: ${this.nalog.broj}`, 150, 14);
         doc.setFontSize(10);
         // Datum u formatu dd.mm.yyyy
-        doc.text(`Datum: ${new Date(this.nalog.datum).toLocaleDateString('sr-RS')}`, 150, 22);
+        doc.text(`Datum: ${new Date().toLocaleDateString('sr-RS')}`, 150, 22);
 
         // --- PODACI ISPOD ZAGLAVLJA ---
         let y = 40;

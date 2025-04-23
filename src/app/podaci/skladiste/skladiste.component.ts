@@ -45,22 +45,31 @@ export class SkladisteComponent implements OnInit, OnDestroy{
   }
 
   public loadData() {
-    this.subsription = this.service.getAllArtikli().subscribe({
-      next: (data) => {
-        this.dataSource = new MatTableDataSource(data);
-        this.dataSource.sort = this.sort;
-        this.dataSource.paginator = this.paginator;
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
 
-        this.dataSource.data.forEach(artikl => {
-          this.artiklUNalogu(artikl).subscribe((imaAktivnih) => {
-            artikl.imaAktivnihStavki = imaAktivnih;
+    if (companyId !== null && !isNaN(companyId)) {
+      this.subsription = this.service.getArtikliByCompany(companyId).subscribe({
+        next: (data) => {
+          this.dataSource = new MatTableDataSource(data);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+
+            setTimeout(() => {
+            this.dataSource.data.forEach(artikl => {
+              this.artiklUNalogu(artikl).subscribe((imaAktivnih) => {
+                artikl.imaAktivnihStavki = imaAktivnih;
+              });
+            });
           });
-        });
-      },
-      error: (error: Error) => {
-        console.log(error.name + ' ' + error.message);
-      }
-    });
+        },
+        error: (error: Error) => {
+          console.log(error.name + ' ' + error.message);
+        }
+      });
+    } else {
+      console.error('Invalid companyId');
+    }
   }
 
   public applyFilter(filter: any) {

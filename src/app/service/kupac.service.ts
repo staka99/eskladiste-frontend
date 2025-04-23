@@ -1,5 +1,5 @@
 import { Kupac } from './../model/kupac';
-import { KUPAC_URL } from './../../constants';
+import { BACKEND_URL, KUPAC_URL } from './../../constants';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
@@ -31,5 +31,9 @@ export class KupacService {
     return this.httpClient.delete<string>(`${KUPAC_URL}/${id}`, {
       responseType: 'text' as 'json'
     });
+  }
+
+  public getKupciByCompany(id:number):Observable<any> {
+    return this.httpClient.get(`${BACKEND_URL}/kupac-company/${id}`);
   }
 }

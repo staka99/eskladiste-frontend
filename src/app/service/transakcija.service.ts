@@ -1,4 +1,4 @@
-import { TRANSAKCIJA_URL } from './../../constants';
+import { BACKEND_URL, TRANSAKCIJA_URL } from './../../constants';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
@@ -31,5 +31,9 @@ export class TransakcijaService {
     return this.httpClient.delete<string>(`${TRANSAKCIJA_URL}/${id}`, {
       responseType: 'text' as 'json'
     });
+  }
+
+  public getTransakcijaByCompany(id:number):Observable<any> {
+    return this.httpClient.get(`${BACKEND_URL}/transakcija-company/${id}`);
   }
 }

@@ -74,10 +74,15 @@ export class ArtiklDijalogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.service.getAllArtikli().subscribe((data) => {
-      this.artikli = data;
-    });
-    this.getArtikli();
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.service.getArtikliByCompany(companyId).subscribe((data) => {
+        this.artikli = data;
+      });
+      this.getArtikli();
+    }
   }
 
   public compare(a:any, b:any) {
@@ -101,6 +106,12 @@ export class ArtiklDijalogComponent implements OnInit {
   }
 
   public ulazNovo() {
+
+    const company = this.getCompanyFromLocalStorage();
+    if (!company) return;
+
+    this.data.company = company;
+
     this.service.addArtikl(this.data).subscribe(
       (data) => {
         this.dataTransakcija.novoStanje = this.data.stanje;
@@ -113,6 +124,7 @@ export class ArtiklDijalogComponent implements OnInit {
         this.transakcija.kolicina = this.data.stanje;
         this.transakcija.artikl = this.data.sifra + " - " + this.data.naziv;
         this.transakcija.jedinica = this.data.jedinica;
+        this.transakcija.company = company;
 
         this.transakcijaService.addTransakcija(this.transakcija).subscribe(
           (data) => {
@@ -139,13 +151,16 @@ export class ArtiklDijalogComponent implements OnInit {
 
   public ulazPostojece() {
     if (this.dataTransakcija.artikl && this.dataTransakcija.kolicina) {
-      console.log(this.dataTransakcija.artikl);
       this.transakcija.datum = this.dataTransakcija.datum;
       this.transakcija.opis = "Ulaz artikla: " + this.dataTransakcija.artikl.naziv + " (" + this.dataTransakcija.artikl.sifra + "); " + this.dataTransakcija.opis;
       this.transakcija.novoStanje = this.dataTransakcija.artikl.stanje + this.dataTransakcija.kolicina;
       this.transakcija.kolicina = this.dataTransakcija.kolicina;
       this.transakcija.artikl = this.dataTransakcija.artikl.sifra + " - " + this.dataTransakcija.artikl.naziv;
       this.transakcija.jedinica = this.dataTransakcija.artikl.jedinica;
+
+      const company = this.getCompanyFromLocalStorage();
+      if (!company) return;
+      this.transakcija.company = company;
 
       this.transakcijaService.addTransakcija(this.transakcija).subscribe(
         (data) => {
@@ -196,6 +211,10 @@ export class ArtiklDijalogComponent implements OnInit {
       this.transakcija.kolicina = this.dataTransakcija.kolicina;
       this.transakcija.artikl = this.dataTransakcija.artikl.sifra + " - " + this.dataTransakcija.artikl.naziv;
       this.transakcija.jedinica = this.dataTransakcija.artikl.jedinica;
+
+      const company = this.getCompanyFromLocalStorage();
+      if (!company) return;
+      this.transakcija.company = company;
 
       this.transakcijaService.addTransakcija(this.transakcija).subscribe(
         (data) => {
@@ -252,9 +271,14 @@ export class ArtiklDijalogComponent implements OnInit {
   }
 
   getArtikli() {
-    this.service.getAllArtikli().subscribe((artikli: Artikl[]) => {
-      this.artikli = this.sortArtikliBySifra(artikli);
-    });
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.service.getArtikliByCompany(companyId).subscribe((artikli: Artikl[]) => {
+        this.artikli = this.sortArtikliBySifra(artikli);
+      });
+    }
   }
 
   sortArtikliBySifra(artikli: Artikl[]): Artikl[] {
@@ -264,6 +288,12 @@ export class ArtiklDijalogComponent implements OnInit {
   // ------------------------ 3 i 4 - izmjena i brisanje --------------------------------
 
   public izmjena() {
+
+    const company = this.getCompanyFromLocalStorage();
+    if (!company) return;
+
+    this.data.company = company;
+
     this.service.updateArtikl(this.data).subscribe(
       (data) => {
         this.snackBar.open(`Uspješno izmijenjen artikl!`, `OK`, {duration: 2500});
@@ -294,5 +324,21 @@ export class ArtiklDijalogComponent implements OnInit {
     this.dialogRef.close();
     this.snackBar.open(`Odustali ste od ove aktivnosti!`, `OK`, {duration: 2500});
   }
+
+  private getCompanyFromLocalStorage(): { id: number, name: string } | null {
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId === null) {
+      console.error("Nema company ID u localStorage.");
+      return null;
+    }
+
+    return {
+      id: companyId,
+      name: ""
+    };
+  }
+
 
 }

@@ -1,4 +1,4 @@
-import { NALOG_URL } from './../../constants';
+import { BACKEND_URL, NALOG_URL } from './../../constants';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { map, Observable } from "rxjs";
@@ -14,14 +14,15 @@ export class NalogService {
   public getAllNalozi():Observable<any> {
     return this.httpClient.get(`${NALOG_URL}`);
   }
-  getNaloziUizradi(): Observable<Nalog[]> {
-    return this.httpClient.get<Nalog[]>(`${NALOG_URL}`).pipe(
+
+  getNaloziUizradi(id:number): Observable<Nalog[]> {
+    return this.httpClient.get<Nalog[]>(`${BACKEND_URL}/nalog-company/${id}`).pipe(
       map(nalozi => nalozi.filter(n => !n.zavrsen))
     );
   }
 
-  getZavrseniNalozi(): Observable<Nalog[]> {
-    return this.httpClient.get<Nalog[]>(`${NALOG_URL}`).pipe(
+  getZavrseniNalozi(id:number): Observable<Nalog[]> {
+    return this.httpClient.get<Nalog[]>(`${BACKEND_URL}/nalog-company/${id}`).pipe(
       map(nalozi => nalozi.filter(n => n.zavrsen))
     );
   }
@@ -43,4 +44,9 @@ export class NalogService {
       responseType: 'text' as 'json'
     });
   }
+
+  public getNalogByCompany(id:number):Observable<any> {
+    return this.httpClient.get(`${BACKEND_URL}/nalog-company/${id}`);
+  }
+
 }

@@ -4,10 +4,14 @@
     <span class="brand-name">eSkladište</span>
   </div>
   <nav>
-    <a routerLink="/skladiste" routerLinkActive="active">Skladište</a>
-    <a routerLink="/kupci" routerLinkActive="active">Kupci</a>
-    <a routerLink="/radni-nalozi-u-izradi" routerLinkActive="active">Otvoreni radni nalozi</a>
-    <a routerLink="/radni-nalozi-zavrseni" routerLinkActive="active">Završeni radni nalozi</a>
-    <a routerLink="/evidencija" routerLinkActive="active">Evidencija</a>
+    <a *ngIf="isLoggedIn()" routerLink="/skladiste" routerLinkActive="active">Skladište</a>
+    <a *ngIf="isLoggedIn()" routerLink="/kupci" routerLinkActive="active">Kupci</a>
+    <a *ngIf="isLoggedIn()" routerLink="/radni-nalozi-u-izradi" routerLinkActive="active">Otvoreni radni nalozi</a>
+    <a *ngIf="isLoggedIn()" routerLink="/radni-nalozi-zavrseni" routerLinkActive="active">Završeni radni nalozi</a>
+    <a *ngIf="isLoggedIn()" routerLink="/evidencija" routerLinkActive="active">Evidencija</a>
+    <a *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+    <a *ngIf="isLoggedIn()" (click)="logout()" routerLinkActive="active">Logout</a>
+    <a *ngIf="isLoggedIn() && authService.isAdmin()" (click)="logout()" routerLinkActive="active">Kompanije</a>
+    <a *ngIf="isLoggedIn() && authService.isAdmin()" (click)="logout()" routerLinkActive="active">Korisnici</a>
   </nav>
 </header>

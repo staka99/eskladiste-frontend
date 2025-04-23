@@ -1,3 +1,4 @@
+import { Company } from './company';
 import { Kupac } from './kupac';
 export class Nalog {
   id!:number | null;
@@ -5,4 +6,5 @@ export class Nalog {
   datum!:Date;
   kupac!:Kupac | null;
   zavrsen!: boolean;
+  company?:Company;
 }

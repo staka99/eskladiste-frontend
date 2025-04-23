@@ -39,10 +39,15 @@ export class NalogDijalogComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.kupacService.getAllKupac().subscribe((data) => {
-      this.kupci = data;
-    });
-    this.getKupci();
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.kupacService.getKupciByCompany(companyId).subscribe((data) => {
+        this.kupci = data;
+      });
+      this.getKupci();
+    }
   }
 
   public compare(a:any, b:any) {
@@ -60,6 +65,11 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   public add() {
+    const company = this.getCompanyFromLocalStorage();
+    if (!company) return;
+
+    this.data.company = company;
+
     this.service.addNalog(this.data).subscribe(
       (data) => {
         this.snackBar.open(`Nalog je uspješno dodat!`, `OK`, {duration: 2500});
@@ -73,6 +83,11 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   public update() {
+    const company = this.getCompanyFromLocalStorage();
+    if (!company) return;
+
+    this.data.company = company;
+
     this.service.updateNalog(this.data).subscribe(
       (data) => {
         this.snackBar.open(`Podaci o nalogu su uspješno izmijenjeni!`, `OK`, {duration: 2500});
@@ -90,6 +105,10 @@ export class NalogDijalogComponent implements OnInit{
     console.log(this.data);
     this.data.zavrsen = true;
     this.data.datum = new Date();
+    const company = this.getCompanyFromLocalStorage();
+    if (!company) return;
+
+    this.data.company = company;
     this.service.updateNalog(this.data).subscribe(
       (data) => {
         this.snackBar.open(`Nalog je uspješno završen!`, `OK`, {duration: 2500});
@@ -118,6 +137,9 @@ export class NalogDijalogComponent implements OnInit{
                 return;
               }
 
+              const company = this.getCompanyFromLocalStorage();
+              if (!company) return;
+
               // Kreiranje novih transakcija
               const transakcija: Transakcija = {
                 id: null,
@@ -126,7 +148,8 @@ export class NalogDijalogComponent implements OnInit{
                 novoStanje: artikl.stanje,
                 opis: `Izlaz po nalogu šifra: ${this.data.broj}, ${this.data.kupac?.naziv}`,
                 artikl: stavka.sifra + " - " + stavka.artikl,
-                jedinica: stavka.jedinica
+                jedinica: stavka.jedinica,
+                company: company
               };
 
               // Slanje transakcije u backend
@@ -171,12 +194,33 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   getKupci() {
-    this.kupacService.getAllKupac().subscribe((kupci: Kupac[]) => {
-       this.kupci = this.sortKupciByNaziv(kupci);
-    });
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.kupacService.getKupciByCompany(companyId).subscribe((kupci: Kupac[]) => {
+        this.kupci = this.sortKupciByNaziv(kupci);
+     });
+    }
+
   }
 
   sortKupciByNaziv(kupci: Kupac[]): Kupac[] {
     return kupci.sort((a, b) => a.naziv.localeCompare(b.naziv));
+  }
+
+  private getCompanyFromLocalStorage(): { id: number, name: string } | null {
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId === null) {
+      console.error("Nema company ID u localStorage.");
+      return null;
+    }
+
+    return {
+      id: companyId,
+      name: ""
+    };
   }
 }

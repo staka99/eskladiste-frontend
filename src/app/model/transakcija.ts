@@ -1,3 +1,5 @@
+import { Company } from "./company";
+
 export class Transakcija {
   id!:number | null;
   datum!:Date;
@@ -6,4 +8,5 @@ export class Transakcija {
   opis!:string;
   artikl!:string;
   jedinica!:string;
+  company?:Company;
 }

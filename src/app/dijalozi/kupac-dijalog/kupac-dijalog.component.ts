@@ -41,6 +41,11 @@ export class KupacDijalogComponent {
   }
 
   public add() {
+  const company = this.getCompanyFromLocalStorage();
+  if (!company) return;
+
+  this.data.company = company;
+
     this.service.addKupac(this.data).subscribe(
       (data) => {
         this.snackBar.open(`Kupac je uspješno dodat!`, `OK`, {duration: 2500});
@@ -54,6 +59,11 @@ export class KupacDijalogComponent {
   }
 
   public update() {
+  const company = this.getCompanyFromLocalStorage();
+  if (!company) return;
+
+  this.data.company = company;
+
     this.service.updateKupac(this.data).subscribe(
       (data) => {
         this.snackBar.open(`Podaci o kupcu su uspješno izmijenjeni!`, `OK`, {duration: 2500});
@@ -85,4 +95,20 @@ export class KupacDijalogComponent {
     this.dialogRef.close();
     this.snackBar.open(`Odustali ste od ove aktivnosti!`, `OK`, {duration: 2500});
   }
+
+  private getCompanyFromLocalStorage(): { id: number, name: string } | null {
+    const companyIdStr = localStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId === null) {
+      console.error("Nema company ID u localStorage.");
+      return null;
+    }
+
+    return {
+      id: companyId,
+      name: ""
+    };
+  }
+
 }

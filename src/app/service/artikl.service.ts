@@ -1,5 +1,5 @@
 import { Artikl } from './../model/artikl';
-import { ARTIKL_URL } from './../../constants';
+import { ARTIKL_URL, BACKEND_URL } from './../../constants';
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs";
@@ -36,4 +36,9 @@ export class ArtiklService {
       responseType: 'text' as 'json'
     });
   }
+
+  public getArtikliByCompany(id:number):Observable<any> {
+    return this.httpClient.get(`${BACKEND_URL}/artikl-company/${id}`);
+  }
+
 }
