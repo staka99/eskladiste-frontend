@@ -6,5 +6,6 @@ export class Stavka {
   sifra!:string;
   artikl!:string;
   kolicina!:number | null;
+  cijena!:number | null;
   jedinica!:string;
 }

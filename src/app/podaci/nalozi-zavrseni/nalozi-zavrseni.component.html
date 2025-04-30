@@ -1,4 +1,4 @@
-<div class="nalog-container">
+<div class="nalog-container" *ngIf="authService.isUser()">
   <div class="top-bar">
     <div class="nalog-select">
       <label class="label">Odaberite radni nalog za prikaz:</label>
@@ -23,6 +23,7 @@
       <h2>📄 Osnovni podaci radnog naloga</h2>
       <div class="nalog-info-row"><strong>Broj naloga:</strong> {{ nalog.broj }}</div>
       <div class="nalog-info-row"><strong>Kupac:</strong> {{ nalog.kupac?.naziv }}</div>
+      <div class="nalog-info-row"><strong>JIB:</strong> {{ nalog.kupac?.jib }}</div>
       <div class="nalog-info-row"><strong>Adresa:</strong> {{ nalog.kupac?.adresa }}, {{ nalog.kupac?.postanskiBroj }} {{ nalog.kupac?.grad }}</div>
       <div class="nalog-info-row"><strong>Status:</strong>
         <span [class.zavrsen]="nalog.zavrsen" [class.nezavrsen]="!nalog.zavrsen">
@@ -36,6 +37,12 @@
     <!--------- Prikaz stavki za određeni nalog --------------->
     <div class="tabela">
         <div class="table">
+          <div class="filter-container">
+            <div class="ukupna-vrijednost-container">
+              <span class="label">Ukupna vrijednost radnog naloga: </span>
+              <span class="value"> {{ ukupno | number:'1.2-2' }} KM</span>
+            </div>
+          </div>
           <div class="nalog-info-placeholder" *ngIf="nalog.zavrsen">
             Nalog je završen. Dalje izmjene nisu dozvoljene.
             <button mat-raised-button class="pdf-button" color="primary" (click)="exportToPDF()">PREUZMI PDF</button>
@@ -64,6 +71,16 @@
               <mat-cell *matCellDef="let row"> {{row.kolicina + " " + row.jedinica }} </mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="cijena">
+              <mat-header-cell mat-sort-header *matHeaderCellDef> Cijena </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.cijena| number:'1.2-2'}} KM </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="vrijednost">
+              <mat-header-cell mat-sort-header *matHeaderCellDef> Vrijednost </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.cijena * row.kolicina | number:'1.2-2'}} KM </mat-cell>
+            </ng-container>
+
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef>
                 </mat-header-cell>
@@ -85,4 +102,12 @@
     </div>
   </ng-template>
 
+</div>
+
+
+<div *ngIf="!authService.isUser()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
+  </div>
 </div>

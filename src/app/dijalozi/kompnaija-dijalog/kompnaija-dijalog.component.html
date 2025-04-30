@@ -1,0 +1,22 @@
+<div class="container">
+  <h3 mat-dialog-title *ngIf="flag == 1">Dodavanje kompanije</h3>
+  <h3 mat-dialog-title *ngIf="flag == 2">Izmjena podataka o kompaniji</h3>
+  <h3 mat-dialog-title *ngIf="flag == 3">Brisanje kompanije</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+    <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Naziv kompanije" name="name" [disabled]="flag == 3" [(ngModel)]="data.name" required/>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <div class="mat-dialog-actions">
+      <button matButton *ngIf="flag == 1" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="add()" >Dodavanje</button>
+      <button matButton *ngIf="flag == 2" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="update()">Izmjena</button>
+      <button matButton *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Brisanje</button>
+      <button matButton (click)="cancel()">Odustani</button>
+  </div>
+</div>

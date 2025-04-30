@@ -3,15 +3,25 @@
     <img src="/skladiste.png" alt="eSkladište Logo" class="logo" />
     <span class="brand-name">eSkladište</span>
   </div>
-  <nav>
-    <a *ngIf="isLoggedIn()" routerLink="/skladiste" routerLinkActive="active">Skladište</a>
-    <a *ngIf="isLoggedIn()" routerLink="/kupci" routerLinkActive="active">Kupci</a>
-    <a *ngIf="isLoggedIn()" routerLink="/radni-nalozi-u-izradi" routerLinkActive="active">Otvoreni radni nalozi</a>
-    <a *ngIf="isLoggedIn()" routerLink="/radni-nalozi-zavrseni" routerLinkActive="active">Završeni radni nalozi</a>
-    <a *ngIf="isLoggedIn()" routerLink="/evidencija" routerLinkActive="active">Evidencija</a>
-    <a *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
-    <a *ngIf="isLoggedIn()" (click)="logout()" routerLinkActive="active">Logout</a>
-    <a *ngIf="isLoggedIn() && authService.isAdmin()" (click)="logout()" routerLinkActive="active">Kompanije</a>
-    <a *ngIf="isLoggedIn() && authService.isAdmin()" (click)="logout()" routerLinkActive="active">Korisnici</a>
+
+  <button class="menu-button" *ngIf="screenWidth <= 1024" (click)="toggleMenu()" [class.open]="menuOpen">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav [class.open]="menuOpen">
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/skladiste" routerLinkActive="active" (click)="toggleMenu()">Skladište</a>
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/kupci" routerLinkActive="active" (click)="toggleMenu()">Kupci</a>
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/radni-nalozi-u-izradi" routerLinkActive="active" (click)="toggleMenu()">Otvoreni radni nalozi</a>
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/radni-nalozi-zavrseni" routerLinkActive="active" (click)="toggleMenu()">Završeni radni nalozi</a>
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/evidencija" routerLinkActive="active" (click)="toggleMenu()">Evidencija</a>
+    <a *ngIf="!isLoggedIn() && !authService.isUser()" routerLink="/login" routerLinkActive="active" (click)="toggleMenu()">Login</a>
+    <a *ngIf="isLoggedIn() && authService.isAdmin()" routerLink="/kompanije" routerLinkActive="active" (click)="toggleMenu()">Kompanije</a>
+    <a *ngIf="isLoggedIn() && authService.isAdmin()" routerLink="/korisnici" routerLinkActive="active" (click)="toggleMenu()">Korisnici</a>
+    <a *ngIf="isLoggedIn()" (click)="logout(); toggleMenu()" routerLinkActive="active">Logout</a>
   </nav>
+
+  <!-- Overlay kada je meni otvoren -->
+  <div class="overlay" *ngIf="menuOpen && screenWidth <= 1024" (click)="toggleMenu()"></div>
 </header>

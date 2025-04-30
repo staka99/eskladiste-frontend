@@ -1,0 +1,56 @@
+<div class="kompanije-container" *ngIf="authService.isAdmin()">
+  <div class="table">
+
+  <mat-toolbar>
+    <span class="title-center"> Kompanije </span>
+  </mat-toolbar>
+
+  <div class="container mat-elavation-z8">
+    </div>
+
+    <mat-table matSort [dataSource]="dataSource" class="mat-cell">
+
+      <ng-container matColumnDef="rb">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> RB </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index"> {{ i + 1 }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          <button mat-icon-button (click)="openDialog(1)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index">
+          <button mat-icon-button (click)="openDialog(2, row.id, row.name)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openDialog(3, row.id, row.name)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+      <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns"> </mat-row>
+    </mat-table>
+
+  </div>
+</div>
+
+<div *ngIf="!authService.isAdmin()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
+  </div>
+</div>

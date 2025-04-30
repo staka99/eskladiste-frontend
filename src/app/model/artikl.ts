@@ -6,6 +6,7 @@ export class Artikl {
   naziv!:string;
   jedinica!:string;
   stanje!:number;
+  cijena!:number;
   imaAktivnihStavki?: boolean;
   company?:Company;
 }

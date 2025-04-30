@@ -143,6 +143,45 @@
     margin:10px
   }
 
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .ukupna-vrijednost-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 40px; /* razmak između ulaza i izlaza */
+    padding: 16px;
+    flex-wrap: wrap; /* ako treba da se prelomi na manjem ekranu */
+  }
+
+  .ukupna-vrijednost-container {
+    margin: 16px 0;
+    padding: 12px 20px;
+    background-color: #ffffff;
+    border-left: 6px solid #fbda61;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1 rem;
+    font-weight: 500;
+  }
+
+  .ukupna-vrijednost-container .label {
+    color: #333;
+  }
+
+  .ukupna-vrijednost-container .value {
+    color: #a09f9b;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -178,7 +217,7 @@
   mat-cell:nth-child(2),
   mat-header-cell:nth-child(2) {
     display: flex;
-    flex: 0 0 60%;
+    flex: 0 0 30%;
   }
 
   mat-cell:nth-child(3),
@@ -190,6 +229,20 @@
 
   mat-cell:nth-child(4),
   mat-header-cell:nth-child(4) {
+    display: flex;
+    flex: 0 0 20%;
+    justify-content: center;
+  }
+
+  mat-cell:nth-child(5),
+  mat-header-cell:nth-child(5) {
+    display: flex;
+    flex: 0 0 10%;
+    justify-content: center;
+  }
+
+  mat-cell:nth-child(6),
+  mat-header-cell:nth-child(6) {
     display: flex;
     flex: 0 0 10%;
     justify-content: center;

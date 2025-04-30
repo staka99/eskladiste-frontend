@@ -8,5 +8,7 @@ export class Transakcija {
   opis!:string;
   artikl!:string;
   jedinica!:string;
+  ulaz!: number | null;
+  izlaz!: number | null;
   company?:Company;
 }

@@ -16,6 +16,7 @@ import { KupacDijalogComponent } from '../../dijalozi/kupac-dijalog/kupac-dijalo
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-kupci',
@@ -24,7 +25,7 @@ import { robotoVfs } from '../../../../public/vfs-fonts';
   styleUrl: './kupci.component.css'
 })
 export class KupciComponent implements OnInit, OnDestroy{
-  displayedColumns = ['id', 'naziv', 'adresa', 'postanskiBroj', 'grad', 'actions'];
+  displayedColumns = ['id', 'naziv', 'jib', 'adresa', 'postanskiBroj', 'grad', 'actions'];
 
   dataSource!:MatTableDataSource<Kupac>;
   subsription!:Subscription;
@@ -32,7 +33,7 @@ export class KupciComponent implements OnInit, OnDestroy{
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  constructor(private service:KupacService, public dialog:MatDialog){}
+  constructor(private service:KupacService, public authService:AuthService, public dialog:MatDialog){}
 
   ngOnInit(): void {
     this.loadData();
@@ -67,8 +68,8 @@ export class KupciComponent implements OnInit, OnDestroy{
     this.dataSource.filter = filter;
   }
 
-    public openDialog(flag:number, id?:number, naziv?:String, adresa?:String, postanskiBroj?:String, grad?:String ) {
-      const dialogRef = this.dialog.open(KupacDijalogComponent, {data : { id, naziv, adresa, postanskiBroj, grad }});
+    public openDialog(flag:number, id?:number, naziv?:String, jib?:String, adresa?:String, postanskiBroj?:String, grad?:String ) {
+      const dialogRef = this.dialog.open(KupacDijalogComponent, {data : { id, naziv, jib, adresa, postanskiBroj, grad }});
         dialogRef.componentInstance.flag = flag;
         dialogRef.afterClosed().subscribe(
           (result) => {
@@ -88,7 +89,7 @@ export class KupciComponent implements OnInit, OnDestroy{
         const formattedDate = today.toLocaleDateString('sr-Latn-BA');
 
         // 📊 Podaci
-        const head = [['RB', 'Naziv', 'Adresa', "Poštanski broj", "Grad"]];
+        const head = [['RB', 'Naziv', 'JIB', 'Adresa', "Poštanski broj", "Grad"]];
 
         doc.addFileToVFS('Roboto-Regular.ttf', robotoVfs['Roboto-Regular.ttf']);
         doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
@@ -110,6 +111,7 @@ export class KupciComponent implements OnInit, OnDestroy{
         const data = sortedData.map((kupci, index) => [
             index + 1,
             kupci.naziv,
+            kupci.jib,
             kupci.adresa,
             kupci.postanskiBroj,
             kupci.grad

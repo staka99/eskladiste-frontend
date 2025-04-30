@@ -1,4 +1,4 @@
-.transakcije-container {
+.kompanije-container {
   background-color: rgb(234, 234, 234);
   min-height: 100vh;
 }
@@ -20,58 +20,23 @@ mat-header-cell:nth-child(1) {
 mat-cell:nth-child(2),
 mat-header-cell:nth-child(2) {
   display: flex;
+  justify-content: center;
   flex: 0 0 10%;
 }
+
 
 mat-cell:nth-child(3),
 mat-header-cell:nth-child(3) {
   display: flex;
-  justify-content: left;
-  flex: 0 0 20%;
+  justify-content: center;
+  flex: 0 0 60%;
 }
 
 mat-cell:nth-child(4),
 mat-header-cell:nth-child(4) {
   display: flex;
-  flex: 0 0 10%;
   justify-content: center;
-}
-
-mat-cell:nth-child(5),
-mat-header-cell:nth-child(5) {
-  display: flex;
-  justify-content: center;
-  flex: 0 0 10%;
-}
-
-mat-cell:nth-child(6),
-mat-header-cell:nth-child(6) {
-  display: flex;
-  justify-content: center;
-  flex: 0 0 10%;
-}
-
-mat-cell:nth-child(7),
-mat-header-cell:nth-child(7) {
-  display: flex;
-  justify-content: center;
-  flex: 0 0 10%;
-  background-color: #fbda6164;
-}
-
-mat-cell:nth-child(8),
-mat-header-cell:nth-child(8) {
-  display: flex;
-  justify-content: center;
-  flex: 0 0 10%;
-  background-color: #dedede;
-}
-
-mat-cell:nth-child(9),
-mat-header-cell:nth-child(9) {
-  display: flex;
-  justify-content: center;
-  flex: 0 0 10%;
+  flex: 0 0 20%;
 }
 
 .title-center {
@@ -89,6 +54,12 @@ mat-header-cell:nth-child(9) {
 }
 
 /* --------------- Pretraga ---------------------------*/
+
+.filter-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
 
 .search-bar {
   width: 300px;
@@ -126,30 +97,10 @@ mat-header-cell:nth-child(9) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  padding: 16px;
 }
 
-.filter-item {
-  flex: 1;
-  min-width: 200px;
-}
-
-.pdf-button {
-  background-color: #ffffff !important;
-  color: black !important;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-@media (max-width: 768px) {
-  .filter-container {
-    flex-direction: column;
-  }
-
-  .filter-item {
-    min-width: unset;
-  }
-}
 
 
 /* --------------- Paginator ---------------------------*/
@@ -165,7 +116,6 @@ mat-paginator {
   border-radius: 8px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
   padding: 8px 16px;
-  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   color: #333;
 }
@@ -183,37 +133,11 @@ mat-paginator {
   color: #3f51b5;
 }
 
-.ukupna-vrijednost-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  gap: 40px; /* razmak između ulaza i izlaza */
-  padding: 16px;
-  flex-wrap: wrap; /* ako treba da se prelomi na manjem ekranu */
+.pdf-button {
+  background-color: #ffffff !important;
+  color: black !important;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
-
-.ukupna-vrijednost-container {
-  margin: 16px 0;
-  padding: 12px 20px;
-  background-color: #ffffff;
-  border-left: 6px solid #fbda61;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 1 rem;
-  font-weight: 500;
-}
-
-.ukupna-vrijednost-container .label {
-  color: #333;
-}
-
-.ukupna-vrijednost-container .value {
-  color: #a09f9b;
-  font-weight: bold;
-  margin-left: 10px;
-}
-
 
 
 @keyframes fadeIn {

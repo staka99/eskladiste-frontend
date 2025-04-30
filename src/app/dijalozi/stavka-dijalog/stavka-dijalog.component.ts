@@ -31,6 +31,7 @@ export class StavkaDijalogComponent {
     nalog: new Nalog(),
     artikl: new Artikl(),
     kolicina: null,
+    cijena: null,
     jedinica: ""
   };
 
@@ -40,6 +41,7 @@ export class StavkaDijalogComponent {
     sifra: "",
     artikl: "",
     kolicina: null,
+    cijena: null,
     jedinica: ""
   };
 
@@ -78,12 +80,12 @@ export class StavkaDijalogComponent {
 
   public add() {
     if (this.dataStavka.artikl && this.dataStavka.kolicina) {
-      console.log(this.dataStavka.artikl);
       this.stavka.sifra = this.dataStavka.artikl.sifra;
       this.stavka.artikl = this.dataStavka.artikl.naziv;
       this.stavka.kolicina = this.dataStavka.kolicina;
       this.stavka.jedinica = this.dataStavka.artikl.jedinica;
       this.stavka.nalog = this.nalog;
+      this.stavka.cijena = this.dataStavka.artikl.cijena;
 
       console.log(this.stavka);
 
@@ -147,7 +149,9 @@ export class StavkaDijalogComponent {
         return;
       }
 
-        artikl.stanje += this.data.kolicina!;
+      artikl.cijena = ((this.data.cijena! * this.data.kolicina!) + (artikl.cijena * artikl.stanje)) / (this.data.kolicina! + artikl.stanje)
+      artikl.stanje += this.data.kolicina!;
+
 
         this.artiklService.updateArtikl(artikl).subscribe({
           next: () => {

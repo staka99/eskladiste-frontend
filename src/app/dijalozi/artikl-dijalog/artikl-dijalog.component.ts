@@ -51,6 +51,8 @@ export class ArtiklDijalogComponent implements OnInit {
     artikl: new Artikl(),
     kolicina: null,
     novoStanje: null,
+    ulaz: null,
+    izlaz: null,
     jedinica: ""
   };
 
@@ -61,6 +63,8 @@ export class ArtiklDijalogComponent implements OnInit {
     artikl: "",
     kolicina: null,
     novoStanje: null,
+    ulaz: null,
+    izlaz: null,
     jedinica: ""
   };
 
@@ -111,6 +115,8 @@ export class ArtiklDijalogComponent implements OnInit {
     if (!company) return;
 
     this.data.company = company;
+    const cijena = this.data.cijena;
+    this.data.cijena = this.data.cijena / this.data.stanje;
 
     this.service.addArtikl(this.data).subscribe(
       (data) => {
@@ -125,6 +131,8 @@ export class ArtiklDijalogComponent implements OnInit {
         this.transakcija.artikl = this.data.sifra + " - " + this.data.naziv;
         this.transakcija.jedinica = this.data.jedinica;
         this.transakcija.company = company;
+        this.transakcija.ulaz = cijena;
+        this.transakcija.izlaz = 0;
 
         this.transakcijaService.addTransakcija(this.transakcija).subscribe(
           (data) => {
@@ -157,6 +165,8 @@ export class ArtiklDijalogComponent implements OnInit {
       this.transakcija.kolicina = this.dataTransakcija.kolicina;
       this.transakcija.artikl = this.dataTransakcija.artikl.sifra + " - " + this.dataTransakcija.artikl.naziv;
       this.transakcija.jedinica = this.dataTransakcija.artikl.jedinica;
+      this.transakcija.ulaz = this.dataTransakcija.ulaz;
+      this.transakcija.izlaz = 0;
 
       const company = this.getCompanyFromLocalStorage();
       if (!company) return;
@@ -168,8 +178,8 @@ export class ArtiklDijalogComponent implements OnInit {
           this.ngOnInit();
           this.dialogRef.close(1);
 
-          if (this.dataTransakcija.kolicina != null && this.dataTransakcija.kolicina > 0) {
-            this.updateArtiklStanjeUlaz(this.dataTransakcija.artikl.id, this.dataTransakcija.kolicina);
+          if (this.dataTransakcija.kolicina != null && this.dataTransakcija.kolicina > 0 && this.dataTransakcija.ulaz) {
+            this.updateArtiklStanjeUlaz(this.dataTransakcija.artikl.id, this.dataTransakcija.kolicina, this.dataTransakcija.ulaz);
           } else {
             this.snackBar.open(`Neispravna količina za otpis`, `OK`, { duration: 2500 });
           }
@@ -184,9 +194,9 @@ export class ArtiklDijalogComponent implements OnInit {
     }
   }
 
-  private updateArtiklStanjeUlaz(artiklId: number, kolicina: number) {
+  private updateArtiklStanjeUlaz(artiklId: number, kolicina: number, cijena: number) {
     const artiklToUpdate = this.dataTransakcija.artikl || this.data;
-
+    artiklToUpdate.cijena = (cijena + artiklToUpdate.cijena * artiklToUpdate.stanje) / (kolicina + artiklToUpdate.stanje);
     artiklToUpdate.stanje += kolicina;
 
     this.service.updateArtikl(artiklToUpdate).subscribe(
@@ -211,6 +221,8 @@ export class ArtiklDijalogComponent implements OnInit {
       this.transakcija.kolicina = this.dataTransakcija.kolicina;
       this.transakcija.artikl = this.dataTransakcija.artikl.sifra + " - " + this.dataTransakcija.artikl.naziv;
       this.transakcija.jedinica = this.dataTransakcija.artikl.jedinica;
+      this.transakcija.ulaz = - this.dataTransakcija.kolicina * this.dataTransakcija.artikl.cijena;
+      this.transakcija.izlaz = 0;
 
       const company = this.getCompanyFromLocalStorage();
       if (!company) return;

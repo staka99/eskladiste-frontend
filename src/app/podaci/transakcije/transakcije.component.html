@@ -1,4 +1,4 @@
-<div class="transakcije-container">
+<div class="transakcije-container" *ngIf="authService.isUser()">
   <div class="table">
 
     <div class="filter-container">
@@ -21,6 +21,18 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+    </div>
+
+    <div class="ukupna-vrijednost-wrapper">
+      <div class="ukupna-vrijednost-container">
+        <span class="label">Ukupan ulaz: </span>
+        <span class="value"> {{ ukupanUlaz | number:'1.2-2' }} KM</span>
+      </div>
+
+      <div class="ukupna-vrijednost-container">
+        <span class="label">Ukupan izlaz: </span>
+        <span class="value"> {{ ukupanIzlaz | number:'1.2-2' }} KM</span>
+      </div>
     </div>
 
 
@@ -64,6 +76,16 @@
       <mat-cell *matCellDef="let row"> {{row.novoStanje + " " + row.jedinica}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="ulaz">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Ulaz </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.ulaz | number:'1.2-2' }} KM </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="izlaz">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Izlaz </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.izlaz | number:'1.2-2' }} KM </mat-cell>
+    </ng-container>
+
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
         </mat-header-cell>
@@ -93,3 +115,9 @@
 
 </div>
 
+<div *ngIf="!authService.isUser()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
+  </div>
+</div>

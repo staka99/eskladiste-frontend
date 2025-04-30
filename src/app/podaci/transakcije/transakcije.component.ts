@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-transakcije',
@@ -27,10 +28,12 @@ import { robotoVfs } from '../../../../public/vfs-fonts';
   styleUrl: './transakcije.component.css'
 })
 export class TransakcijeComponent implements OnInit, OnDestroy{
-  displayedColumns = ['id', 'datum', 'opis', 'artikl', 'kolicina', 'novoStanje', 'actions'];
+  displayedColumns = ['id', 'datum', 'opis', 'artikl', 'kolicina', 'novoStanje', 'ulaz', 'izlaz', 'actions'];
 
   dataSource!:MatTableDataSource<Transakcija>;
   subsription!:Subscription;
+  ukupanUlaz: number = 0;
+  ukupanIzlaz: number = 0;
 
   months = [
     { name: 'Januar', value: 1 },
@@ -54,12 +57,14 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  constructor(private service:TransakcijaService, public dialog:MatDialog){}
+  constructor(private service:TransakcijaService, public dialog:MatDialog, public authService:AuthService,){}
 
   ngOnInit(): void {
+    const today = new Date();
+    this.selectedMonth = today.getMonth() + 1; // +1 jer getMonth() vraća 0–11
+    this.selectedYear = today.getFullYear();
     this.loadData();
-    this.selectedMonth = 0; // "-" za mesec
-    this.selectedYear = 0;  // "-" za godinu
+    this.izracunaj();
   }
 
   ngOnDestroy(): void {
@@ -76,6 +81,7 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
           this.dataSource = new MatTableDataSource(data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.izracunaj();
           setTimeout(() => {
           this.applyDateFilter();
           })
@@ -89,17 +95,14 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
 
 
   public applyDateFilter() {
-    console.log('Primena filtera sa vrednostima:', {
-      selectedMonth: this.selectedMonth,
-      selectedYear: this.selectedYear
-    });
-
     this.dataSource.filterPredicate = (data: Transakcija, filter: string): boolean => {
       return this.customFilterPredicate(data, filter);
     };
 
     const filterValue = `${this.selectedMonth} ${this.selectedYear} ${this.dataSource.filter}`.toLowerCase();
     this.dataSource.filter = filterValue;
+
+    this.izracunaj();
   }
 
   customFilterPredicate(data: Transakcija, filter: string): boolean {
@@ -126,6 +129,20 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
       )
   }
 
+  izracunaj() {
+    if (!this.dataSource || !this.dataSource.data) return;
+
+    this.ukupanUlaz = this.dataSource.filteredData.reduce((sum, item) => {
+      return sum + item.ulaz!;
+    }, 0);
+
+    this.ukupanIzlaz = this.dataSource.filteredData.reduce((sum, item) => {
+      return sum + item.izlaz!;
+    }, 0);
+
+  }
+
+
     // ------------------------------ PDF
     exportToPDF() {
       const doc = new jsPDF();
@@ -148,7 +165,7 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
       doc.text(`Izveštaj za: ${mesecNaziv} ${godina}`, 14, 28);
 
       // 📊 Tabela
-      const head = [['RB', 'Datum', 'Opis', 'Artikl', 'Količina', 'Novo stanje']];
+      const head = [['RB', 'Datum', 'Opis', 'Artikl', 'Količina', 'Novo stanje', 'Ulaz', 'Izlaz']];
 
       const sortedData = this.dataSource.filteredData.slice().sort((a, b) => {
         const dateA = new Date(a.datum);
@@ -166,7 +183,9 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
         transakcija.opis || '',
         transakcija.artikl || '',
         transakcija.kolicina?.toString() || '0',
-        transakcija.novoStanje?.toString() || '0'
+        transakcija.novoStanje?.toString() || '0',
+        transakcija.ulaz !== undefined ? `${transakcija!.ulaz!.toFixed(2)} KM` : '0.00 KM',
+        transakcija.izlaz !== undefined ? `${transakcija!.izlaz!.toFixed(2)} KM` : '0.00 KM'
       ]);
 
       autoTable(doc, {
@@ -195,6 +214,46 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
         tableLineWidth: 0.2,
         theme: 'grid', // Koristi grid temu za bolje poravnanje ivica
       });
+
+      const finalY = (doc as any).lastAutoTable.finalY || 34;
+
+      // 🟫 Sivo polje - naziv "Ukupno ulaz"
+      doc.setDrawColor(0);
+      doc.setFillColor(230, 230, 230);
+      doc.rect(14, finalY + 10, 60, 9, 'FD');
+      doc.setTextColor(0);
+      doc.setFontSize(11);
+      doc.setFont('Roboto', 'normal');
+      doc.text('Ukupno ulaz:', 16, finalY + 16);
+
+      // ⬜ Bijelo polje - iznos ulaza
+      doc.setDrawColor(0);
+      doc.setFillColor(255, 255, 255);
+      doc.rect(74, finalY + 10, 40, 9, 'FD');
+      doc.setTextColor(0);
+      doc.setFontSize(11);
+      doc.setFont('Roboto', 'normal');
+      doc.text(`${this.ukupanUlaz.toFixed(2)} KM`, 76, finalY + 16);
+
+      // 🟫 Sivo polje - naziv "Ukupno izlaz" – odmah ispod ulaza
+      doc.setDrawColor(0);
+      doc.setFillColor(230, 230, 230);
+      doc.rect(14, finalY + 19, 60, 9, 'FD');
+      doc.setTextColor(0);
+      doc.setFontSize(11);
+      doc.setFont('Roboto', 'normal');
+      doc.text('Ukupno izlaz:', 16, finalY + 25);
+
+      // ⬜ Bijelo polje - iznos izlaza
+      doc.setDrawColor(0);
+      doc.setFillColor(255, 255, 255);
+      doc.rect(74, finalY + 19, 40, 9, 'FD');
+      doc.setTextColor(0);
+      doc.setFontSize(11);
+      doc.setFont('Roboto', 'normal');
+      doc.text(`${this.ukupanIzlaz.toFixed(2)} KM`, 76, finalY + 25);
+
+
 
       const pageCount = doc.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {

@@ -1,4 +1,4 @@
-<div class="kupci-container">
+<div class="kupci-container" *ngIf="authService.isUser()">
   <div class="table">
 
     <div class="filter-container">
@@ -33,9 +33,14 @@
       </ng-container>
 
       <ng-container matColumnDef="naziv">
-      <mat-header-cell mat-sort-header *matHeaderCellDef> Naziv </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.naziv}} </mat-cell>
-    </ng-container>
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Naziv </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.naziv}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="jib">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> JIB </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.jib}} </mat-cell>
+      </ng-container>
 
       <ng-container matColumnDef="adresa">
         <mat-header-cell mat-sort-header *matHeaderCellDef> Adresa </mat-header-cell>
@@ -59,10 +64,10 @@
           </button>
         </mat-header-cell>
         <mat-cell *matCellDef="let row; let i = index">
-          <button mat-icon-button (click)="openDialog(2, row.id, row.naziv, row.adresa, row.postanskiBroj, row.grad)">
+          <button mat-icon-button (click)="openDialog(2, row.id, row.naziv, row.jib, row.adresa, row.postanskiBroj, row.grad)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="openDialog(3, row.id, row.naziv, row.adresa, row.postanskiBroj, row.grad)">
+          <button mat-icon-button (click)="openDialog(3, row.id, row.naziv, row.jib, row.adresa, row.postanskiBroj, row.grad)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
@@ -80,3 +85,9 @@
   </div>
 </div>
 
+<div *ngIf="!authService.isUser()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
+  </div>
+</div>

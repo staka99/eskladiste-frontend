@@ -1,0 +1,67 @@
+<div class="korisnici-container" *ngIf="authService.isAdmin()">
+  <div class="table">
+
+  <mat-toolbar>
+    <span class="title-center"> Korisnici </span>
+  </mat-toolbar>
+
+  <div class="container mat-elavation-z8">
+    </div>
+
+    <mat-table matSort [dataSource]="dataSource" class="mat-cell">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> ID </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index"> {{ i + 1 }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.username}} </mat-cell>
+    </ng-container>
+
+      <ng-container matColumnDef="password">
+        <mat-header-cell *matHeaderCellDef> Password </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.password}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="company">
+        <mat-header-cell *matHeaderCellDef> Company </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.company?.name}} </mat-cell>
+      </ng-container>
+
+
+      <ng-container matColumnDef="role">
+        <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.role}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          <button mat-icon-button (click)="openDialog(1)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index">
+          <button mat-icon-button (click)="openDialog(2, row.id, row.username, row.password, row.company, row.role)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openDialog(3, row.id, row.username, row.password, row.company, row.role)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+      <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns"> </mat-row>
+    </mat-table>
+
+  </div>
+</div>
+
+<div *ngIf="!authService.isAdmin()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
+  </div>
+</div>

@@ -19,6 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
+import { AuthService } from '../../service/auth.service';
 @Component({
   selector: 'app-skladiste',
   imports: [CommonModule, MatToolbarModule, MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule],
@@ -26,7 +27,8 @@ import { robotoVfs } from '../../../../public/vfs-fonts';
   styleUrl: './skladiste.component.css'
 })
 export class SkladisteComponent implements OnInit, OnDestroy{
-  displayedColumns = ['id', 'sifra', 'naziv', 'jedinica', 'stanje', 'actions'];
+  displayedColumns = ['id', 'sifra', 'naziv', 'jedinica', 'cijenaPoJm', 'stanje', 'cijena', 'actions'];
+  ukupnaVrijednost: number = 0;
 
   dataSource!:MatTableDataSource<Artikl>;
   subsription!:Subscription;
@@ -34,10 +36,11 @@ export class SkladisteComponent implements OnInit, OnDestroy{
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  constructor(private service:ArtiklService, public dialog:MatDialog, public stavkaService:StavkaService){}
+  constructor(private service:ArtiklService, public dialog:MatDialog, public authService:AuthService, public stavkaService:StavkaService){}
 
   ngOnInit(): void {
     this.loadData();
+    this.izracunajUkupnuVrijednost();
   }
 
   ngOnDestroy(): void {
@@ -61,6 +64,7 @@ export class SkladisteComponent implements OnInit, OnDestroy{
                 artikl.imaAktivnihStavki = imaAktivnih;
               });
             });
+            this.izracunajUkupnuVrijednost();
           });
         },
         error: (error: Error) => {
@@ -79,13 +83,18 @@ export class SkladisteComponent implements OnInit, OnDestroy{
     this.dataSource.filter = filter;
   }
 
-  public openDialog(flag:number, id?:number, sifra?:String, naziv?:String, jedinica?:String, stanje?:number ) {
-    const dialogRef = this.dialog.open(ArtiklDijalogComponent, {data : { id, sifra, naziv, jedinica, stanje }});
+  roundToTwo(value: number): number {
+    return parseFloat(value.toFixed(2));
+  }
+
+  public openDialog(flag:number, id?:number, sifra?:String, naziv?:String, jedinica?:String, stanje?:number, cijena?:number ) {
+    const dialogRef = this.dialog.open(ArtiklDijalogComponent, {data : { id, sifra, naziv, jedinica, stanje, cijena }});
       dialogRef.componentInstance.flag = flag;
       dialogRef.afterClosed().subscribe(
         (result) => {
           if(result==1) {
             this.loadData();
+            this.izracunajUkupnuVrijednost();
           }
         }
       )
@@ -100,6 +109,14 @@ export class SkladisteComponent implements OnInit, OnDestroy{
         return of(false);
       })
     );
+  }
+
+  izracunajUkupnuVrijednost() {
+    if (!this.dataSource || !this.dataSource.data) return;
+
+    this.ukupnaVrijednost = this.dataSource.data.reduce((sum, item) => {
+      return sum + (item.cijena * item.stanje);
+    }, 0);
   }
 
 
@@ -121,7 +138,7 @@ export class SkladisteComponent implements OnInit, OnDestroy{
     doc.text(`Datum: ${formattedDate}`, 14, 22);
 
     // 📊 Podaci
-    const head = [['RB', 'Šifra', 'Naziv', 'Jedinica mjere', 'Stanje']];
+    const head = [['RB', 'Šifra', 'Naziv', 'Jedinica mjere', 'Cijena po JM', 'Stanje', 'Ukupna vrijednost']];
 
     const sortedData = this.dataSource.data.slice().sort((a, b) => {
       return a.sifra.localeCompare(b.sifra); // ako je šifra string
@@ -136,34 +153,61 @@ export class SkladisteComponent implements OnInit, OnDestroy{
       artikl.sifra,
       artikl.naziv,
       artikl.jedinica,
-      artikl.stanje.toString()
+      artikl.cijena.toFixed(2) + ' KM',
+      artikl.stanje.toString(),
+      (artikl.cijena * artikl.stanje).toFixed(2) + ' KM'
     ]);
 
+
     autoTable(doc, {
-            head: head,
-            body: data,
-            startY: 28,
-            styles: {
-                fontSize: 10,
-                font: 'Roboto', // Postavljanje fonta za telo tabele
-                cellPadding: 1,
-                lineColor: [0, 0, 0],
-                lineWidth: 0.2,
-            },
-            headStyles: {
-                fillColor: [200, 200, 200],
-                textColor: [0, 0, 0],
-                font: 'Roboto',
-                fontSize: 10,
-                fontStyle: 'normal',
-            },
-            alternateRowStyles: {
-                fillColor: [245, 245, 245],
-                font: 'Roboto',
-            },
-            tableLineColor: [0, 0, 0],
-            tableLineWidth: 0.2,
+      head: head,
+      body: data,
+      startY: 28,
+      styles: {
+        fontSize: 10,
+        font: 'Roboto',
+        cellPadding: 1,
+        lineColor: [0, 0, 0],
+        lineWidth: 0.2,
+      },
+      headStyles: {
+        fillColor: [200, 200, 200],
+        textColor: [0, 0, 0],
+        font: 'Roboto',
+        fontSize: 10,
+        fontStyle: 'normal',
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
+        font: 'Roboto',
+      },
+      tableLineColor: [0, 0, 0],
+      tableLineWidth: 0.2,
     });
+
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+
+    // Dimenzije
+    const startX = 14;
+    const cellHeight = 8;
+    const leftCellWidth = 40;
+    const rightCellWidth = 40;
+
+    // Font i boje
+    doc.setFontSize(10);
+    doc.setDrawColor(0); // crna linija
+    doc.setFillColor(230, 230, 230); // svijetlosiva
+
+    // Leva ćelija (Ukupno)
+    doc.rect(startX, finalY, leftCellWidth, cellHeight, 'FD'); // Fill + Draw
+    doc.setTextColor(0, 0, 0);
+    doc.text('Ukupno:', startX + 2, finalY + 5);
+
+    // Desna ćelija (Iznos)
+    doc.setFillColor(255, 255, 255); // bijela
+    doc.rect(startX + leftCellWidth, finalY, rightCellWidth, cellHeight, 'FD');
+    doc.text(`${this.ukupnaVrijednost.toFixed(2)} KM`, startX + leftCellWidth + 2, finalY + 5);
+
 
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {

@@ -146,6 +146,8 @@ export class NalogDijalogComponent implements OnInit{
                 datum: new Date(),
                 kolicina: stavka.kolicina,
                 novoStanje: artikl.stanje,
+                ulaz: 0,
+                izlaz: stavka.cijena * stavka.kolicina,
                 opis: `Izlaz po nalogu šifra: ${this.data.broj}, ${this.data.kupac?.naziv}`,
                 artikl: stavka.sifra + " - " + stavka.artikl,
                 jedinica: stavka.jedinica,

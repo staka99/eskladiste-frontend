@@ -9,5 +9,7 @@ export class PomocnaTransakcija {
   opis!:string;
   artikl!:Artikl;
   jedinica!:string;
+  ulaz!: number | null;
+  izlaz!: number | null;
   company?:Company;
 }

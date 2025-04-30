@@ -13,6 +13,25 @@
 
       <div class="form">
         <mat-form-field class="form-field">
+          <input
+            matInput
+            placeholder="JIB preduzeća"
+            name="jib"
+            [disabled]="flag == 3"
+            [(ngModel)]="data.jib"
+            required
+            minlength="13"
+            maxlength="13"
+            #jib="ngModel"
+          />
+          <mat-error *ngIf="jib.errors?.['minlength'] || jib.errors?.['maxlength']">
+            JIB mora imati 13 karaktera.
+          </mat-error>
+        </mat-form-field>
+        <br>
+      </div>
+      <div class="form">
+        <mat-form-field class="form-field">
           <input matInput placeholder="Adresa preduzeća" name="adresa" [disabled]="flag == 3" [(ngModel)]="data.adresa" />
         </mat-form-field>
       </div>

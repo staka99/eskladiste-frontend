@@ -14,9 +14,6 @@ import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
-import { NalogDijalogComponent } from '../../dijalozi/nalog-dijalog/nalog-dijalog.component';
-import { StavkaDijalogComponent } from '../../dijalozi/stavka-dijalog/stavka-dijalog.component';
-import { Kupac } from '../../model/kupac';
 import { Nalog } from '../../model/nalog';
 import { Stavka } from '../../model/stavka';
 import { NalogService } from '../../service/nalog.service';
@@ -24,6 +21,7 @@ import { StavkaService } from '../../service/stavka.service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-nalozi-zavrseni',
@@ -37,10 +35,11 @@ export class NaloziZavrseniComponent implements OnInit {
   nalog!: Nalog;
   stavke!: Stavka[];
 
-  displayedColumns = ['id', 'artikl', 'kolicina', 'actions'];
+  displayedColumns = ['id', 'artikl', 'kolicina', 'cijena', 'vrijednost', 'actions'];
 
   dataSource!:MatTableDataSource<Stavka>;
   subsription!:Subscription;
+  ukupno: number = 0;
 
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
@@ -49,6 +48,7 @@ export class NaloziZavrseniComponent implements OnInit {
     public snackBar:MatSnackBar,
     public service:NalogService,
     public stavkaService:StavkaService,
+    public authService:AuthService,
     public dialog:MatDialog
   ) {}
 
@@ -64,6 +64,7 @@ export class NaloziZavrseniComponent implements OnInit {
       });
       this.loadData();
     }
+    this.izracunaj();
   }
 
   public compare(a:any, b:any) {
@@ -79,6 +80,7 @@ export class NaloziZavrseniComponent implements OnInit {
           this.dataSource = new MatTableDataSource(data);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;
+          this.izracunaj();
         },
         error: (error: Error) => {
           console.log(error.name + ' ' + error.message);
@@ -92,6 +94,14 @@ export class NaloziZavrseniComponent implements OnInit {
     filter = filter.trim();
     filter = filter.toLocaleLowerCase();
     this.dataSource.filter = filter;
+  }
+
+  izracunaj() {
+    if (!this.dataSource || !this.dataSource.data) return;
+
+    this.ukupno = this.dataSource.filteredData.reduce((sum, item) => {
+      return sum + item.cijena! * item.kolicina!;
+    }, 0);
   }
 
   exportToPDF() {
@@ -118,25 +128,46 @@ export class NaloziZavrseniComponent implements OnInit {
     // Datum u formatu dd.mm.yyyy
     doc.text(`Datum: ${new Date(this.nalog.datum).toLocaleDateString('sr-RS')}`, 150, 22);
 
-    // --- PODACI ISPOD ZAGLAVLJA ---
-    let y = 40;
-    doc.setFontSize(12);
-    doc.setTextColor('#333333'); // Tamno siva boja za kupca
-    doc.text(`Kupac: ${this.nalog.kupac?.naziv}`, 14, y);
-    y += 6;
-    doc.text(`Adresa: ${this.nalog.kupac?.adresa}, ${this.nalog.kupac?.postanskiBroj} ${this.nalog.kupac?.grad}`, 14, y);
-    y += 10;
+      // --- PODACI ISPOD ZAGLAVLJA ---
+      let y = 40;
+      doc.setFontSize(12);
+
+      // Kupac
+      doc.setTextColor('#333333');
+      doc.text('Kupac:', 14, y);
+      doc.setFont('Roboto', 'normal');
+      doc.text(`${this.nalog.kupac?.naziv}`, 40, y);
+      doc.setFont('Roboto', 'normal');
+      y += 6;
+
+      // JIB
+      doc.text('JIB:', 14, y);
+      doc.setFont('Roboto', 'normal');
+      doc.text(`${this.nalog.kupac?.jib || ''}`, 40, y);
+      doc.setFont('Roboto', 'normal');
+      y += 6;
+
+      // Adresa
+      doc.text('Adresa:', 14, y);
+      doc.setFont('Roboto', 'normal');
+      doc.text(`${this.nalog.kupac?.adresa}, ${this.nalog.kupac?.postanskiBroj} ${this.nalog.kupac?.grad}`, 40, y);
+      doc.setFont('Roboto', 'normal');
+      y += 10;
+
+
 
     // --- PRIPREMA TABELU PODATAKA ---
     const tableData = this.dataSource.data.map((row, index) => [
       index + 1,
       `${row.sifra} - ${row.artikl}`,
-      `${row.kolicina} ${row.jedinica}`
+      `${row.kolicina} ${row.jedinica}`,
+      `${row.cijena?.toFixed(2)}`, // Cijena na 2 decimale
+      `${((row.cijena ?? 0) * (row.kolicina ?? 0)).toFixed(2)}` // Vrijednost = cijena * kolicina
     ]);
 
     autoTable(doc, {
       startY: y,
-      head: [['RB', 'Artikl', 'Količina']],
+      head: [['RB', 'Artikl', 'Količina', 'Cijena', 'Vrijednost']],
       body: tableData,
       styles: {
         halign: 'left', // Poravnavanje levo
@@ -172,6 +203,30 @@ export class NaloziZavrseniComponent implements OnInit {
       },
       theme: 'grid', // Koristi grid temu za bolje poravnanje ivica
     });
+
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+
+    // Dimenzije
+    const startX = 14;
+    const cellHeight = 8;
+    const leftCellWidth = 40;
+    const rightCellWidth = 40;
+
+    // Font i boje
+    doc.setFontSize(10);
+    doc.setDrawColor(0); // crna linija
+    doc.setFillColor(230, 230, 230); // svijetlosiva
+
+    // Leva ćelija (Ukupno)
+    doc.rect(startX, finalY, leftCellWidth, cellHeight, 'FD'); // Fill + Draw
+    doc.setTextColor(0, 0, 0);
+    doc.text('Ukupno:', startX + 2, finalY + 5);
+
+    // Desna ćelija (Iznos)
+    doc.setFillColor(255, 255, 255); // bijela
+    doc.rect(startX + leftCellWidth, finalY, rightCellWidth, cellHeight, 'FD');
+    doc.text(`${this.ukupno.toFixed(2)} KM`, startX + leftCellWidth + 2, finalY + 5);
+
 
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {

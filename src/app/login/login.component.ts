@@ -36,8 +36,6 @@ export class LoginComponent {
       next: (response) => {
         localStorage.setItem('token', response.token);
         this.decodeToken(response.token);
-        console.log("Successufuly: " + username + password);
-        //this.appComponent.updateLinks();
         this.router.navigate(['/skladiste']);
       },
       error: (error) => {
@@ -51,17 +49,14 @@ export class LoginComponent {
     decodeToken(token: string): void {
     try {
       const decodedToken: any = jwtDecode(token);
-      console.log('Decoded Token:', decodedToken);
 
       const roles = decodedToken.role;
       if (roles && roles.some((role: any) => role.authority === 'ADMIN')) {
         localStorage.setItem('role', 'ADMIN');
         localStorage.setItem('company', decodedToken.companyId);
-        console.log("KOMPANIJA" + localStorage.getItem('company'));
       } else if (roles && roles.some((role: any) => role.authority === 'USER')) {
         localStorage.setItem('role', 'USER');
         localStorage.setItem('company', decodedToken.companyId);
-        console.log("KOMPANIJA" + localStorage.getItem('company'));
       }
     } catch (error) {
       console.error('Login failed', error);

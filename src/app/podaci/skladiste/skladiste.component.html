@@ -1,4 +1,4 @@
-<div class="skladiste-container">
+<div class="skladiste-container" *ngIf="authService.isUser()">
   <div class="table">
 
     <div class="filter-container">
@@ -23,6 +23,10 @@
       </mat-form-field>
     </div>
 
+    <div class="ukupna-vrijednost-container">
+      <span class="label">Ukupna vrijednost skladišta: </span>
+      <span class="value"> {{ ukupnaVrijednost | number:'1.2-2' }} KM</span>
+    </div>
 
   <mat-toolbar>
     <span class="title-center"> Lista artikala </span>
@@ -40,13 +44,23 @@
       </ng-container>
 
       <ng-container matColumnDef="sifra">
-      <mat-header-cell mat-sort-header *matHeaderCellDef> Šifra </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.sifra}} </mat-cell>
-    </ng-container>
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Šifra </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.sifra}} </mat-cell>
+      </ng-container>
 
       <ng-container matColumnDef="naziv">
         <mat-header-cell mat-sort-header *matHeaderCellDef> Naziv </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.naziv}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="cijenaPoJm">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Cijena po jedinici mjere </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.cijena  | number:'1.2-2' }} KM </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="stanje">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Stanje </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.stanje}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="jedinica">
@@ -54,16 +68,16 @@
         <mat-cell *matCellDef="let row"> {{row.jedinica }} </mat-cell>
       </ng-container>
 
-    <ng-container matColumnDef="stanje">
-      <mat-header-cell mat-sort-header *matHeaderCellDef> Stanje </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.stanje}} </mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="cijena">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Ukupna vrijednost </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{ row.cijena * row.stanje | number:'1.2-2' }} KM </mat-cell>
+      </ng-container>
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>
       </mat-header-cell>
       <mat-cell *matCellDef="let row; let i = index">
-        <button mat-icon-button (click)="openDialog(3, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)">
+        <button mat-icon-button (click)="openDialog(3, row.id, row.sifra, row.naziv, row.jedinica, roundToTwo(row.stanje), roundToTwo(row.cijena))">
           <mat-icon>edit</mat-icon>
         </button>
         <span *ngIf="row.stanje == 0" [matTooltip]="row.imaAktivnihStavki ? 'Artikl postoji u radnom nalogu koji nije završen. Tek kada završite nalog, možete obrisati ovaj artikl.' : ''">
@@ -88,6 +102,14 @@
   <div class="paginator-container">
     <mat-paginator  [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 50]">
     </mat-paginator>
+  </div>
+</div>
+
+
+<div *ngIf="!authService.isUser()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
   </div>
 </div>
 

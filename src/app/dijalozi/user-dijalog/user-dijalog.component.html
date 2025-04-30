@@ -1,0 +1,54 @@
+<div class="container">
+  <h3 mat-dialog-title *ngIf="flag == 1">Dodavanje korisnika</h3>
+  <h3 mat-dialog-title *ngIf="flag == 2">Izmjena korisnika</h3>
+  <h3 mat-dialog-title *ngIf="flag == 3">Brisanje korisnika</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+    <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Username" name="Username" [disabled]="flag == 3" [(ngModel)]="data.username" required/>
+        </mat-form-field>
+      </div>
+
+      <div mat-dialog-content (keydown.enter)="onSubmit()" *ngIf="flag != 2">
+        <div class="form">
+          <small *ngIf="flag == 2">Please leave empty if you don't want to change password</small>
+          <mat-form-field class="form-field">
+            <input matInput placeholder="Password" name="Password" *ngIf="flag != 2" [disabled]="flag == 2 || flag == 3" [(ngModel)]="data.password"/>
+          </mat-form-field>
+        </div>
+      </div>
+
+    <div class="form">
+      <mat-select placeholder="Role" name="role" [disabled]="flag == 3" [(ngModel)]="data.role" required>
+        <mat-option *ngFor="let role of roles" [value]="role">
+          {{ role }}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+
+
+  <div class="form">
+    <mat-select [compareWith]="compare"
+                placeholder="Company"
+                name="company"
+                [disabled]="flag == 3"
+                [(ngModel)]="data.company"
+                required>
+      <mat-option *ngFor="let company of allCompanies"
+                  [value]="company">
+        {{ company.name }}
+      </mat-option>
+    </mat-select>
+  </div>
+  </form>
+
+  <div class="mat-dialog-actions">
+        <button matButton *ngIf="flag == 1" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="add()" >Add</button>
+        <button matButton *ngIf="flag == 2" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="update()">Update</button>
+        <button matButton *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Delete</button>
+        <button matButton (click)="cancel()">Cancel</button>
+  </div>
+</div>
