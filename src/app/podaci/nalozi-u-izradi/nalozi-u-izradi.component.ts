@@ -58,7 +58,7 @@ export class NaloziUIzradiComponent implements OnInit {
 
 
     ngOnInit(): void {
-      const companyIdStr = sessionStorage.getItem('company');
+      const companyIdStr = localStorage.getItem('company');
       const companyId = companyIdStr ? Number(companyIdStr) : null;
 
       if (companyId !== null && !isNaN(companyId)) {
@@ -84,7 +84,7 @@ export class NaloziUIzradiComponent implements OnInit {
             if (result === 1) {
               if(flag===1) {
 
-                const companyIdStr = sessionStorage.getItem('company');
+                const companyIdStr = localStorage.getItem('company');
                 const companyId = companyIdStr ? Number(companyIdStr) : null;
 
                 if (companyId !== null && !isNaN(companyId)) {
@@ -98,7 +98,7 @@ export class NaloziUIzradiComponent implements OnInit {
                 }
               }
 
-              const companyIdStr = sessionStorage.getItem('company');
+              const companyIdStr = localStorage.getItem('company');
               const companyId = companyIdStr ? Number(companyIdStr) : null;
 
               if (companyId !== null && !isNaN(companyId)) {

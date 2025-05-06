@@ -21,10 +21,10 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return sessionStorage.getItem('role') === 'ADMIN';
+    return localStorage.getItem('role') === 'ADMIN';
   }
 
   isUser(): boolean {
-    return sessionStorage.getItem('role') === 'USER';
+    return localStorage.getItem('role') === 'USER';
   }
 }

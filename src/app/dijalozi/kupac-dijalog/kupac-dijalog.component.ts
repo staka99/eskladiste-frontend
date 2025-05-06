@@ -97,11 +97,11 @@ export class KupacDijalogComponent {
   }
 
   private getCompanyFromSessionStorage(): { id: number, name: string } | null {
-    const companyIdStr = sessionStorage.getItem('company');
+    const companyIdStr = localStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId === null) {
-      console.error("Nema company ID u sessionStorage.");
+      console.error("Nema company ID u localStorage.");
       return null;
     }
 

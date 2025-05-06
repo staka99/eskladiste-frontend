@@ -34,7 +34,7 @@ export class LoginComponent {
 
     this.authService.login(username, password).subscribe({
       next: (response) => {
-        sessionStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.token);
         this.decodeToken(response.token);
         this.router.navigate(['/skladiste']);
       },
@@ -52,11 +52,11 @@ export class LoginComponent {
 
       const roles = decodedToken.role;
       if (roles && roles.some((role: any) => role.authority === 'ADMIN')) {
-        sessionStorage.setItem('role', 'ADMIN');
-        sessionStorage.setItem('company', decodedToken.companyId);
+        localStorage.setItem('role', 'ADMIN');
+        localStorage.setItem('company', decodedToken.companyId);
       } else if (roles && roles.some((role: any) => role.authority === 'USER')) {
-        sessionStorage.setItem('role', 'USER');
-        sessionStorage.setItem('company', decodedToken.companyId);
+        localStorage.setItem('role', 'USER');
+        localStorage.setItem('company', decodedToken.companyId);
       }
     } catch (error) {
       console.error('Login failed', error);
