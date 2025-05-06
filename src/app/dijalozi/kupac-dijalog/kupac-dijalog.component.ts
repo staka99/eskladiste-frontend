@@ -41,7 +41,7 @@ export class KupacDijalogComponent {
   }
 
   public add() {
-  const company = this.getCompanyFromLocalStorage();
+  const company = this.getCompanyFromSessionStorage();
   if (!company) return;
 
   this.data.company = company;
@@ -59,7 +59,7 @@ export class KupacDijalogComponent {
   }
 
   public update() {
-  const company = this.getCompanyFromLocalStorage();
+  const company = this.getCompanyFromSessionStorage();
   if (!company) return;
 
   this.data.company = company;
@@ -96,12 +96,12 @@ export class KupacDijalogComponent {
     this.snackBar.open(`Odustali ste od ove aktivnosti!`, `OK`, {duration: 2500});
   }
 
-  private getCompanyFromLocalStorage(): { id: number, name: string } | null {
-    const companyIdStr = localStorage.getItem('company');
+  private getCompanyFromSessionStorage(): { id: number, name: string } | null {
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId === null) {
-      console.error("Nema company ID u localStorage.");
+      console.error("Nema company ID u sessionStorage.");
       return null;
     }
 

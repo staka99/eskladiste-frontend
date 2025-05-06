@@ -55,7 +55,7 @@ export class NaloziZavrseniComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {

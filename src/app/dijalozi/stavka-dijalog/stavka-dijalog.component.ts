@@ -55,7 +55,7 @@ export class StavkaDijalogComponent {
   ) {}
 
   ngOnInit(): void {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {
@@ -132,7 +132,7 @@ export class StavkaDijalogComponent {
   // -------------------- brisanje -----------------------------
 
   public delete(sifra: string) {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId === null) {
@@ -191,7 +191,7 @@ export class StavkaDijalogComponent {
   // -------------------- artikli -----------------------------
 
   getArtikli() {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {

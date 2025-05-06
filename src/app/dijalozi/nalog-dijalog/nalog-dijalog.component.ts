@@ -39,7 +39,7 @@ export class NalogDijalogComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {
@@ -65,7 +65,7 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   public add() {
-    const company = this.getCompanyFromLocalStorage();
+    const company = this.getCompanyFromSessionStorage();
     if (!company) return;
 
     this.data.company = company;
@@ -83,7 +83,7 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   public update() {
-    const company = this.getCompanyFromLocalStorage();
+    const company = this.getCompanyFromSessionStorage();
     if (!company) return;
 
     this.data.company = company;
@@ -105,7 +105,7 @@ export class NalogDijalogComponent implements OnInit{
     console.log(this.data);
     this.data.zavrsen = true;
     this.data.datum = new Date();
-    const company = this.getCompanyFromLocalStorage();
+    const company = this.getCompanyFromSessionStorage();
     if (!company) return;
 
     this.data.company = company;
@@ -137,7 +137,7 @@ export class NalogDijalogComponent implements OnInit{
                 return;
               }
 
-              const company = this.getCompanyFromLocalStorage();
+              const company = this.getCompanyFromSessionStorage();
               if (!company) return;
 
               // Kreiranje novih transakcija
@@ -196,7 +196,7 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   getKupci() {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {
@@ -211,12 +211,12 @@ export class NalogDijalogComponent implements OnInit{
     return kupci.sort((a, b) => a.naziv.localeCompare(b.naziv));
   }
 
-  private getCompanyFromLocalStorage(): { id: number, name: string } | null {
-    const companyIdStr = localStorage.getItem('company');
+  private getCompanyFromSessionStorage(): { id: number, name: string } | null {
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId === null) {
-      console.error("Nema company ID u localStorage.");
+      console.error("Nema company ID u sessionStorage.");
       return null;
     }
 

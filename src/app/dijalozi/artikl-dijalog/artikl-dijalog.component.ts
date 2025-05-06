@@ -78,7 +78,7 @@ export class ArtiklDijalogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {
@@ -111,7 +111,7 @@ export class ArtiklDijalogComponent implements OnInit {
 
   public ulazNovo() {
 
-    const company = this.getCompanyFromLocalStorage();
+    const company = this.getCompanyFromSessionStorage();
     if (!company) return;
 
     this.data.company = company;
@@ -168,7 +168,7 @@ export class ArtiklDijalogComponent implements OnInit {
       this.transakcija.ulaz = this.dataTransakcija.ulaz;
       this.transakcija.izlaz = 0;
 
-      const company = this.getCompanyFromLocalStorage();
+      const company = this.getCompanyFromSessionStorage();
       if (!company) return;
       this.transakcija.company = company;
 
@@ -224,7 +224,7 @@ export class ArtiklDijalogComponent implements OnInit {
       this.transakcija.ulaz = - this.dataTransakcija.kolicina * this.dataTransakcija.artikl.cijena;
       this.transakcija.izlaz = 0;
 
-      const company = this.getCompanyFromLocalStorage();
+      const company = this.getCompanyFromSessionStorage();
       if (!company) return;
       this.transakcija.company = company;
 
@@ -283,7 +283,7 @@ export class ArtiklDijalogComponent implements OnInit {
   }
 
   getArtikli() {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {
@@ -301,7 +301,7 @@ export class ArtiklDijalogComponent implements OnInit {
 
   public izmjena() {
 
-    const company = this.getCompanyFromLocalStorage();
+    const company = this.getCompanyFromSessionStorage();
     if (!company) return;
 
     this.data.company = company;
@@ -337,12 +337,12 @@ export class ArtiklDijalogComponent implements OnInit {
     this.snackBar.open(`Odustali ste od ove aktivnosti!`, `OK`, {duration: 2500});
   }
 
-  private getCompanyFromLocalStorage(): { id: number, name: string } | null {
-    const companyIdStr = localStorage.getItem('company');
+  private getCompanyFromSessionStorage(): { id: number, name: string } | null {
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId === null) {
-      console.error("Nema company ID u localStorage.");
+      console.error("Nema company ID u sessionStorage.");
       return null;
     }
 
