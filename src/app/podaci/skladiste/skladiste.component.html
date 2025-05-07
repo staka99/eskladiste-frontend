@@ -85,7 +85,7 @@
             mat-icon-button
             color="warn"
             class="action-button"
-            (click)="openDialog(4, row.id, row.sifra, row.naziv, row.jedinica, row.stanje)"
+            (click)="openDialog(4, row.id, row.sifra, row.naziv, row.jedinica, row.stanje, roundToTwo(row.stanje), roundToTwo(row.cijena) )"
             [disabled]="row.imaAktivnihStavki">
             <mat-icon class="delete-icon">delete</mat-icon>
           </button>
