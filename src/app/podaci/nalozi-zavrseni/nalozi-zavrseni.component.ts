@@ -22,6 +22,8 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
 import { AuthService } from '../../service/auth.service';
+import { NalogDijalogComponent } from '../../dijalozi/nalog-dijalog/nalog-dijalog.component';
+import { Kupac } from '../../model/kupac';
 
 @Component({
   selector: 'app-nalozi-zavrseni',
@@ -103,6 +105,45 @@ export class NaloziZavrseniComponent implements OnInit {
       return sum + item.cijena! * item.kolicina!;
     }, 0);
   }
+
+      public openDialogNalog(flag:number, id?:number, broj?:String, kupac?:Kupac ) {
+        const dialogRef = this.dialog.open(NalogDijalogComponent, {data : { id, broj, kupac }});
+           dialogRef.componentInstance.flag = flag;
+           dialogRef.afterClosed().subscribe(
+             (result) => {
+              if (result === 1) {
+                if(flag===1) {
+
+                  const companyIdStr = sessionStorage.getItem('company');
+                  const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+                  if (companyId !== null && !isNaN(companyId)) {
+                    this.service.getNaloziUizradi(companyId).subscribe((data) => {
+                      this.nalozi = data;
+
+                      // Pretpostavka: poslednji je najnoviji
+                      this.nalog = this.nalozi[this.nalozi.length - 1];
+                      this.loadData();
+                    });
+                  }
+                }
+
+                const companyIdStr = sessionStorage.getItem('company');
+                const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+                if (companyId !== null && !isNaN(companyId)) {
+                  this.service.getNaloziUizradi(companyId).subscribe((data) => {
+                    this.nalozi = data;
+
+                    if (this.nalog?.id) {
+                      this.nalog = this.nalozi.find(n => n.id === this.nalog.id)!;
+                      this.loadData();
+                    }
+                  });
+                }
+              }
+            });
+          }
 
   exportToPDF() {
     const doc = new jsPDF();
