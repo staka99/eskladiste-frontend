@@ -15,6 +15,8 @@ import { Transakcija } from '../../model/transakcija';
 import { TransakcijaService } from '../../service/transakcija.service';
 import { ArtiklService } from '../../service/artikl.service';
 import { Artikl } from '../../model/artikl';
+import { forkJoin } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nalog-dijalog',
@@ -175,19 +177,33 @@ export class NalogDijalogComponent implements OnInit{
   }
 
   public delete() {
-    if(this.data.id) {
-      this.service.deleteNalog(this.data.id).subscribe({
-        next: (data) => {
-          this.snackBar.open(`Podaci su uspješno obrisani!`, `OK`, { duration: 2500 });
+    if (this.data.id) {
+      this.stavkaService.getStavkeZaNalog(this.data.id).pipe(
+        switchMap((stavke: any[]) => {
+          if (!stavke || stavke.length === 0) {
+            // Nema stavki → odmah briši nalog
+            return this.service.deleteNalog(this.data.id!);
+          } else {
+            // Ima stavki → prvo briši sve stavke, pa onda nalog
+            const deleteCalls = stavke.map(s => this.stavkaService.deleteStavka(s.id));
+            return forkJoin(deleteCalls).pipe(
+              switchMap(() => this.service.deleteNalog(this.data.id!))
+            );
+          }
+        })
+      ).subscribe({
+        next: () => {
+          this.snackBar.open(`Nalog i stavke su uspješno obrisani!`, `OK`, { duration: 2500 });
           this.dialogRef.close(1);
         },
         error: (error: Error) => {
           console.error('Greška prilikom brisanja:', error);
-          this.snackBar.open(`Neuspješno brisanje`, `OK`, { duration: 2500 });
-        },
+          this.snackBar.open(`Greška prilikom brisanja naloga ili stavki`, `OK`, { duration: 2500 });
+        }
       });
     }
   }
+
 
 
   public cancel() {
