@@ -44,7 +44,7 @@ export class KupciComponent implements OnInit, OnDestroy{
   }
 
   public loadData() {
-    const companyIdStr = localStorage.getItem('company');
+    const companyIdStr = sessionStorage.getItem('company');
     const companyId = companyIdStr ? Number(companyIdStr) : null;
 
     if (companyId !== null && !isNaN(companyId)) {

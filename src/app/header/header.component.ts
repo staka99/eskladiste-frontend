@@ -28,12 +28,12 @@ onResize(event: any) {
 }
 
   logout(): void {
-    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
 
   isLoggedIn(): boolean {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     return !!token;
   }
 
