@@ -32,14 +32,12 @@
       </div>
       <div class="nalog-info-row" *ngIf="nalog.zavrsen"><strong>Datum:</strong> {{ nalog.datum | date: 'dd.MM.yyyy' }}</div>
       <div class="nalog-actions">
-        <button mat-raised-button color="accent" class="action-button" (click)="openDialogNalog(2, nalog.id!, nalog.broj, nalog.kupac!)" *ngIf="nalog.zavrsen">IZMIJENI PODATKE</button>
-        <ng-container *ngIf="nalog.zavrsen">
+       <ng-container>
           <button
               mat-raised-button
               color="warn"
               class="action-button"
-              (click)="openDialogNalog(3, nalog.id!, nalog.broj, nalog.kupac!)"
-              [disabled]="dataSource.data">
+              (click)="openDialogNalog(3, nalog.id!, nalog.broj, nalog.kupac!)">
               OBRIŠI
             </button>
         </ng-container>
