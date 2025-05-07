@@ -40,7 +40,7 @@ export const MY_DATE_FORMATS = {
 export class ArtiklDijalogComponent implements OnInit {
   @Output() dataChanged = new EventEmitter<void>();
   flag!:number;
-  artikli!: Artikl[];
+  artikli: Artikl[] = [];
   selectedArtiklId: Artikl | null = null;
   selectedValue: string = '';
 
