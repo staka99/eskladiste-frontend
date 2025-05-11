@@ -4,10 +4,10 @@
   <h3 mat-dialog-title *ngIf="flag == 3">Brisanje kupca</h3>
 
   <form class="dialog-content" #formControl="ngForm">
-    <div mat-dialog-content (keydown.enter)="onSubmit()">
+    <div mat-dialog-content>
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Naziv preduzeća" name="naziv" [disabled]="flag == 3" [(ngModel)]="data.naziv" required/>
+          <input matInput placeholder="Naziv preduzeća" name="naziv" [disabled]="flag == 3" [(ngModel)]="data.naziv" (keydown.enter)="focusNext($event)" required/>
         </mat-form-field>
       </div>
 
@@ -23,6 +23,7 @@
             minlength="13"
             maxlength="13"
             #jib="ngModel"
+            (keydown.enter)="focusNext($event)"
           />
           <mat-error *ngIf="jib.errors?.['minlength'] || jib.errors?.['maxlength']">
             JIB mora imati 13 karaktera.
@@ -32,19 +33,19 @@
       </div>
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Adresa preduzeća" name="adresa" [disabled]="flag == 3" [(ngModel)]="data.adresa" />
+          <input matInput placeholder="Adresa preduzeća" name="adresa" [disabled]="flag == 3" [(ngModel)]="data.adresa" (keydown.enter)="focusNext($event)" />
         </mat-form-field>
       </div>
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Poštanski broj" name="postanskiBroj" [disabled]="flag == 3" [(ngModel)]="data.postanskiBroj" />
+          <input matInput placeholder="Poštanski broj" name="postanskiBroj" [disabled]="flag == 3" [(ngModel)]="data.postanskiBroj" (keydown.enter)="focusNext($event)" />
         </mat-form-field>
       </div>
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Grad" name="grad" [disabled]="flag == 3" [(ngModel)]="data.grad" />
+          <input matInput placeholder="Grad" name="grad" [disabled]="flag == 3" [(ngModel)]="data.grad" (keydown.enter)="onSubmit()"/>
         </mat-form-field>
       </div>
     </div>

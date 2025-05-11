@@ -228,20 +228,55 @@ mat-paginator {
 }
 
 @media (max-width: 768px) {
-  .table {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
+  .ukupna-vrijednost-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0px;
   }
 
   .mat-toolbar {
-    padding: 0 10px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 30px;
+    height: auto;
+    width: 100%;
   }
 
   .title-center {
-    font-size: 1.5rem;
+    margin: 0;
+    text-align: center;
+    width: 100%;
   }
+
+  .pdf-button {
+    align-self: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .table mat-header-cell {
+    font-size: 10px;
+  }
+
+  .table mat-cell {
+    font-size: 10px;
+  }
+
+    .tabela-container {
+    height: 90%;               
+    overflow-y: auto;  
+    overflow-x: auto;      
+  }
+
+  table {
+    width: 100%;               
+    border-collapse: collapse; 
+  }
+
+
 }
+
 
 @media (max-width: 480px) {
   .table {

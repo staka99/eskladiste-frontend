@@ -22,14 +22,14 @@
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" required />
+          <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" (keydown.enter)="focusNext($event)" required />
           <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
           <mat-datepicker #datum></mat-datepicker>
         </mat-form-field>
       </div>
 
       <div class="form">
-        <mat-select [compareWith]="compare" placeholder="Odaberite artikl" name="artikl" [(ngModel)]="dataTransakcija.artikl" required >
+        <mat-select [compareWith]="compare" placeholder="Odaberite artikl" name="artikl" [(ngModel)]="dataTransakcija.artikl" (keydown.enter)="focusNext($event)" required >
           <mat-option *ngFor="let artikl of artikli" [value]="artikl" required>
             {{ artikl.sifra + " - " + artikl.naziv }}
           </mat-option>
@@ -42,7 +42,7 @@
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput type="number" min="0.000001" placeholder="Količina ulaza" name="kolicina" [(ngModel)]="dataTransakcija.kolicina" required />
+          <input matInput type="number" min="0.000001" placeholder="Količina ulaza" name="kolicina" [(ngModel)]="dataTransakcija.kolicina" (keydown.enter)="focusNext($event)" required  />
           <mat-icon matSuffix>{{ dataTransakcija.artikl.jedinica }}</mat-icon>
         </mat-form-field>
       </div>
@@ -52,14 +52,14 @@
       </div>
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput type="number" min="0.000001" placeholder="Nabavna vrijednost bez PDV-a" name="cijena" [(ngModel)]="dataTransakcija.ulaz" required />
+          <input matInput type="number" min="0.000001" placeholder="Nabavna vrijednost bez PDV-a" name="cijena" [(ngModel)]="dataTransakcija.ulaz" (keydown.enter)="focusNext($event)" required />
           <mat-icon matSuffix>KM</mat-icon>
         </mat-form-field>
       </div>
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Dodatna napomena" name="razlog" [(ngModel)]="dataTransakcija.opis"/>
+          <input matInput placeholder="Dodatna napomena" name="razlog" [(ngModel)]="dataTransakcija.opis" (keydown.enter)="onSubmit()"/>
         </mat-form-field>
       </div>
 
@@ -78,7 +78,7 @@
     <form class="dialog-content" #formControl="ngForm">
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" required />
+          <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" (keydown.enter)="focusNext($event)" required />
           <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
           <mat-datepicker #datum></mat-datepicker>
         </mat-form-field>
@@ -111,7 +111,7 @@
         </div>
       </div>
 
-      <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div mat-dialog-content>
         <div class="form">
           <mat-form-field class="form-field">
             <input matInput type="number" placeholder="Količina" name="Količina" [(ngModel)]="data.stanje" (keydown.enter)="focusNext($event)" required/>
@@ -131,7 +131,7 @@
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Dodatna napomena" name="razlog" [(ngModel)]="dataTransakcija.opis"/>
+          <input matInput placeholder="Dodatna napomena" name="razlog" [(ngModel)]="dataTransakcija.opis" (keydown.enter)="onSubmit()"/>
         </mat-form-field>
       </div>
 
@@ -154,14 +154,14 @@
   <form class="dialog-content" #formControl="ngForm">
     <div class="form">
       <mat-form-field class="form-field">
-        <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" [disabled]="stanjeNedostupno()" required />
+        <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" [disabled]="stanjeNedostupno()" (keydown.enter)="focusNext($event)" required />
         <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
         <mat-datepicker #datum></mat-datepicker>
       </mat-form-field>
     </div>
 
     <div class="form">
-      <mat-select [compareWith]="compare" placeholder="Odaberite artikl" name="artikl" [(ngModel)]="dataTransakcija.artikl" required >
+      <mat-select [compareWith]="compare" placeholder="Odaberite artikl" name="artikl" [(ngModel)]="dataTransakcija.artikl" (keydown.enter)="focusNext($event)" required >
         <mat-option *ngFor="let artikl of artikli" [value]="artikl">
           {{ artikl.sifra + " - " + artikl.naziv }}
         </mat-option>
@@ -174,13 +174,13 @@
 
     <div class="form">
       <mat-form-field class="form-field">
-        <input matInput placeholder="Razlog otpisa" name="razlog" [(ngModel)]="dataTransakcija.opis" [disabled]="stanjeNedostupno()" required/>
+        <input matInput placeholder="Razlog otpisa" name="razlog" [(ngModel)]="dataTransakcija.opis" [disabled]="stanjeNedostupno()" (keydown.enter)="focusNext($event)" required/>
       </mat-form-field>
     </div>
 
     <div class="form">
       <mat-form-field class="form-field">
-        <input matInput type="number" min="0.000001" [max]="dataTransakcija.artikl.stanje" placeholder="Količina otpisa" name="kolicina" [disabled]="stanjeNedostupno()" [(ngModel)]="dataTransakcija.kolicina" required />
+        <input matInput type="number" min="0.000001" [max]="dataTransakcija.artikl.stanje" placeholder="Količina otpisa" name="kolicina" [disabled]="stanjeNedostupno()" [(ngModel)]="dataTransakcija.kolicina" (keydown.enter)="onSubmit()" required />
         <mat-icon matSuffix>{{ dataTransakcija.artikl.jedinica }}</mat-icon>
       </mat-form-field>
     </div>

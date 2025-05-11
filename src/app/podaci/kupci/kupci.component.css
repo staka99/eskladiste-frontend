@@ -172,35 +172,79 @@ mat-paginator {
   }
 }
 
-@media (max-width: 768px) {
-  .table {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-  }
-
-  .mat-toolbar {
-    padding: 0 10px;
-  }
-
-  .title-center {
-    font-size: 1.5rem;
-  }
-}
-
 @media (max-width: 480px) {
   .table {
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-
-  .mat-toolbar {
-    padding: 0 5px;
+    width: 100%;
+    padding: 0;
   }
 
   .title-center {
     font-size: 1.2rem;
   }
+
+  .table mat-header-cell {
+    font-size: 6px;
+    justify-content: center;
+  }
+
+  .table mat-cell {
+    font-size: 10px;
+  }
+  
+  .mat-icon {
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    flex: 0;
+  }
+
+  mat-cell:nth-child(1),
+  mat-header-cell:nth-child(1) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 5%;
+}
+
+mat-cell:nth-child(2),
+mat-header-cell:nth-child(2) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 17%;
+}
+
+mat-cell:nth-child(3),
+mat-header-cell:nth-child(3) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+mat-cell:nth-child(4),
+mat-header-cell:nth-child(4) {
+  display: flex;
+  flex: 0 0 16%;
+  justify-content: center;
+}
+
+mat-cell:nth-child(5),
+mat-header-cell:nth-child(5) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+mat-cell:nth-child(6),
+mat-header-cell:nth-child(6) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 15%;
+}
+
+mat-cell:nth-child(7),
+mat-header-cell:nth-child(7) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 20%;
+}
 
 }

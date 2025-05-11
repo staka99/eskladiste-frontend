@@ -270,7 +270,7 @@ mat-paginator {
 
   .table mat-header-cell,
   .table mat-cell {
-    font-size: 12px; /* Manji font za uređaje sa širinom manjom od 768px */
+    font-size: 12px; 
   }
 }
 

@@ -64,7 +64,7 @@
           </button>
         </mat-header-cell>
         <mat-cell *matCellDef="let row; let i = index">
-          <button mat-icon-button (click)="openDialog(2, row.id, row.naziv, row.jib, row.adresa, row.postanskiBroj, row.grad)">
+          <button mat-icon-button class="mat-icon-button" (click)="openDialog(2, row.id, row.naziv, row.jib, row.adresa, row.postanskiBroj, row.grad)">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button (click)="openDialog(3, row.id, row.naziv, row.jib, row.adresa, row.postanskiBroj, row.grad)">

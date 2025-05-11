@@ -4,17 +4,17 @@
   <h3 mat-dialog-title *ngIf="flag == 3">Brisanje radnog naloga</h3>
 
   <form class="dialog-content" #formControl="ngForm">
-    <div mat-dialog-content (keydown.enter)="onSubmit()">
+    <div mat-dialog-content >
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput placeholder="Broj radnog naloga" name="broj" [disabled]="flag == 3" [(ngModel)]="data.broj" required/>
+          <input matInput placeholder="Broj radnog naloga" name="broj" [disabled]="flag == 3" [(ngModel)]="data.broj" (keydown.enter)="focusNext($event)" required/>
         </mat-form-field>
       </div>
     </div>
 
     <div class="form">
       <mat-select [compareWith]="compare" placeholder="Odaberite kupca" name="kupac" [disabled]="flag == 3" [(ngModel)]="data.kupac" required >
-        <mat-option *ngFor="let kupac of kupci" [value]="kupac" required>
+        <mat-option *ngFor="let kupac of kupci" [value]="kupac" (keydown.enter)="onSubmit()" required>
           {{ kupac.naziv + ", " + kupac.grad }}
         </mat-option>
       </mat-select>

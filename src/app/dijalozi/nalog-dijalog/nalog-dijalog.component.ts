@@ -66,6 +66,19 @@ export class NalogDijalogComponent implements OnInit{
     }
   }
 
+    focusNext(event: Event): void {
+  const keyboardEvent = event as KeyboardEvent; // Type assertion
+  keyboardEvent.preventDefault();
+
+  const form = keyboardEvent.target as HTMLElement;
+  const inputs = Array.from(document.querySelectorAll('input, textarea, select, mat-select')) as HTMLElement[];
+
+  const index = inputs.indexOf(form);
+  if (index > -1 && index + 1 < inputs.length) {
+    inputs[index + 1].focus();
+  }
+}
+
   public add() {
     const company = this.getCompanyFromSessionStorage();
     if (!company) return;

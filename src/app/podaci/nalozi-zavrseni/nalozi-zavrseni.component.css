@@ -286,35 +286,132 @@
     }
   }
 
-  @media (max-width: 768px) {
-    .table {
-      width: 80%;
-      margin-left: 10%;
-      margin-right: 10%;
-    }
+/* TABLETI (max širina 768px) */
+@media (max-width: 768px) {
 
-    .mat-toolbar {
-      padding: 0 10px;
-    }
-
-    .title-center {
-      font-size: 1.5rem;
-    }
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
   }
 
-  @media (max-width: 480px) {
-    .table {
-      width: 90%;
-      margin-left: 5%;
-      margin-right: 5%;
-    }
-
-    .mat-toolbar {
-      padding: 0 5px;
-    }
-
-    .title-center {
-      font-size: 1.2rem;
-    }
-
+  .nalog-select,
+  .nalog-button {
+    width: 100%;
   }
+
+  .nalog-info-container {
+    padding: 20px;
+    font-size: 15px;
+    width: auto;
+  }
+
+  .nalog-info-container h2 {
+    font-size: 18px;
+  }
+
+  mat-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .title-center {
+    flex-basis: 100%;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .dodaj-button,
+  .pdf-button {
+    width: 100%;
+  }
+
+  .nalog-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+    .nalog-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .mat-table {
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+
+/* MOBILNI TELEFONI (max širina 420px) */
+@media (max-width: 420px) {
+  .nalog-container {
+    padding: 20px;
+  }
+
+  .label {
+    font-size: 13px;
+  }
+
+
+  .nalog-info-container h2 {
+    font-size: 16px;
+  }
+
+  .nalog-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mat-toolbar {
+    height: auto;
+    padding: 10%;
+  }
+
+  .dodaj-button,
+  .pdf-button,
+  .action-button,
+  .kreiraj-button {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .top-bar {
+    gap: 15px;
+  }
+
+  mat-form-field.full-width {
+    height: auto;
+  }
+
+  .ukupna-vrijednost-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+    .nalog-actions {
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 120px; 
+  }
+
+  .mat-table {
+    overflow-x: auto;
+    display: block;
+  }
+
+  .table mat-cell {
+    font-size: 10px;
+  }
+
+    .table mat-header-cell {
+    font-size: 10px;
+    font-weight: bold;
+  }
+}
+
+
+
