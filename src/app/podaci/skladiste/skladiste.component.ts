@@ -58,6 +58,21 @@ export class SkladisteComponent implements OnInit, OnDestroy{
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
 
+                this.dataSource.sortingDataAccessor = (item, property) => {
+                  switch (property) {
+                    case 'sifra':
+                      return item.sifra?.toLowerCase() || '';
+                    case 'naziv':
+                      return item.naziv?.toLowerCase() || '';
+                    case 'cijena':
+                      return item.cijena;
+                    case 'stanje':
+                      return item.stanje;
+                    default:
+                      return (item as any)[property];
+                  }
+                };
+
             setTimeout(() => {
             this.dataSource.data.forEach(artikl => {
               this.artiklUNalogu(artikl).subscribe((imaAktivnih) => {
