@@ -87,7 +87,7 @@
       <div *ngIf="artiklPostoji(data.sifra)" style="color: red; font-size: 13px;">
         Artikl sa ovom šifrom postoji u bazi!
       </div>
-      <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div mat-dialog-content>
         <div class="form">
           <mat-form-field class="form-field">
             <input matInput placeholder="Šifra" name="Šifra" [(ngModel)]="data.sifra" (ngModelChange)="data.sifra = data.sifra.toUpperCase()" required/>
@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div mat-dialog-content>
         <div class="form">
           <mat-form-field class="form-field">
             <input matInput placeholder="Naziv artikla" name="Naziv" [(ngModel)]="data.naziv" required/>
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-      <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div mat-dialog-content>
         <div class="form">
           <mat-form-field class="form-field">
             <input matInput placeholder="Jedinica mjere" name="Jedinica mjere" [(ngModel)]="data.jedinica" required/>
@@ -114,7 +114,7 @@
       <div mat-dialog-content (keydown.enter)="onSubmit()">
         <div class="form">
           <mat-form-field class="form-field">
-            <input matInput type="number" min="0.000001" placeholder="Količina" name="Količina" [(ngModel)]="data.stanje" required/>
+            <input matInput type="number" placeholder="Količina" name="Količina" [(ngModel)]="data.stanje" required/>
           </mat-form-field>
         </div>
       </div>
@@ -124,7 +124,7 @@
       </div>
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput type="number" min="0.000001" placeholder="Nabavna vrijednost bez PDV-a" name="cijena" [(ngModel)]="data.cijena" required />
+          <input matInput type="number" placeholder="Nabavna vrijednost bez PDV-a" name="cijena" [(ngModel)]="data.cijena" required />
           <mat-icon matSuffix>KM</mat-icon>
         </mat-form-field>
       </div>
