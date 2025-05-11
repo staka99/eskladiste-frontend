@@ -60,7 +60,8 @@ export class SkladisteComponent implements OnInit, OnDestroy{
 
             this.sort.active = 'sifra';
             this.sort.direction = 'asc';
-            this.sort.sortChange.emit();
+
+            this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.sort);
 
             setTimeout(() => {
             this.dataSource.data.forEach(artikl => {
