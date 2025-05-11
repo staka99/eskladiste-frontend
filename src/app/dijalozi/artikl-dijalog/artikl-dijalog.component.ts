@@ -153,9 +153,11 @@ export class ArtiklDijalogComponent implements OnInit {
     );
   }
 
-  focusNext(event: KeyboardEvent) {
-  event.preventDefault(); 
-  const form = event.target as HTMLElement;
+focusNext(event: Event): void {
+  const keyboardEvent = event as KeyboardEvent; // Type assertion
+  keyboardEvent.preventDefault();
+
+  const form = keyboardEvent.target as HTMLElement;
   const inputs = Array.from(document.querySelectorAll('input, textarea, select, mat-select')) as HTMLElement[];
 
   const index = inputs.indexOf(form);
@@ -163,6 +165,7 @@ export class ArtiklDijalogComponent implements OnInit {
     inputs[index + 1].focus();
   }
 }
+
 
 
   artiklPostoji(sifra: string): boolean {
