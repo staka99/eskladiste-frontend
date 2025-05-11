@@ -69,7 +69,7 @@
       </ng-container>
 
       <ng-container matColumnDef="ukCijena">
-        <mat-header-cell mat-sort-header *matHeaderCellDef> Ukupna vrijednost </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> Ukupna vrijednost </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.cijena * row.stanje | number:'1.2-2' }} KM </mat-cell>
       </ng-container>
 

@@ -55,12 +55,10 @@ export class SkladisteComponent implements OnInit, OnDestroy{
       this.subsription = this.service.getArtikliByCompany(companyId).subscribe({
         next: (data) => {
           this.dataSource = new MatTableDataSource(data);
-            this.dataSource.sort = this.sort;
-
             this.sort.active = 'sifra';
             this.sort.direction = 'asc';
             this.sort.sortChange.emit();
-
+            this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
 
             setTimeout(() => {
