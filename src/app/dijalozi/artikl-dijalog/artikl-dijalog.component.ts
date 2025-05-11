@@ -114,12 +114,12 @@ export class ArtiklDijalogComponent implements OnInit {
     const company = this.getCompanyFromSessionStorage();
     if (!company) return;
 
-    this.data.company = company;
-    const cijena = this.data.cijena;
-    this.data.cijena = this.data.cijena / this.data.stanje;
-
     this.service.addArtikl(this.data).subscribe(
       (data) => {
+        this.data.company = company;
+        const cijena = this.data.cijena;
+        this.data.cijena = this.data.cijena / this.data.stanje;
+
         this.dataTransakcija.novoStanje = this.data.stanje;
         this.dataTransakcija.kolicina = this.data.stanje;
         this.dataTransakcija.artikl = data;
