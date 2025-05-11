@@ -153,6 +153,18 @@ export class ArtiklDijalogComponent implements OnInit {
     );
   }
 
+  focusNext(event: KeyboardEvent) {
+  event.preventDefault(); 
+  const form = event.target as HTMLElement;
+  const inputs = Array.from(document.querySelectorAll('input, textarea, select, mat-select')) as HTMLElement[];
+
+  const index = inputs.indexOf(form);
+  if (index > -1 && index + 1 < inputs.length) {
+    inputs[index + 1].focus();
+  }
+}
+
+
   artiklPostoji(sifra: string): boolean {
     return this.artikli.some(a => a.sifra === sifra);
   }
