@@ -27,7 +27,7 @@ import { AuthService } from '../../service/auth.service';
   styleUrl: './skladiste.component.css'
 })
 export class SkladisteComponent implements OnInit, OnDestroy{
-  displayedColumns = ['id', 'sifra', 'naziv', 'jedinica', 'cijenaPoJm', 'stanje', 'cijena', 'actions'];
+  displayedColumns = ['id', 'sifra', 'naziv', 'jedinica', 'cijena', 'stanje', 'ukCijena', 'actions'];
   ukupnaVrijednost: number = 0;
 
   dataSource!:MatTableDataSource<Artikl>;
@@ -55,12 +55,13 @@ export class SkladisteComponent implements OnInit, OnDestroy{
       this.subsription = this.service.getArtikliByCompany(companyId).subscribe({
         next: (data) => {
           this.dataSource = new MatTableDataSource(data);
-            this.dataSource.sort = this.sort;
-            this.dataSource.paginator = this.paginator;
+            //this.dataSource.sort = this.sort;
 
             this.sort.active = 'sifra';
             this.sort.direction = 'asc';
             this.sort.sortChange.emit();
+            
+            this.dataSource.paginator = this.paginator;
 
             setTimeout(() => {
             this.dataSource.data.forEach(artikl => {

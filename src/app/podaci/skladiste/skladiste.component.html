@@ -53,7 +53,7 @@
         <mat-cell *matCellDef="let row"> {{row.naziv}} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="cijenaPoJm">
+      <ng-container matColumnDef="cijena">
         <mat-header-cell mat-sort-header *matHeaderCellDef> Cijena po jedinici mjere </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.cijena  | number:'1.2-2' }} KM </mat-cell>
       </ng-container>
@@ -68,7 +68,7 @@
         <mat-cell *matCellDef="let row"> {{row.jedinica }} </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="cijena">
+      <ng-container matColumnDef="ukCijena">
         <mat-header-cell mat-sort-header *matHeaderCellDef> Ukupna vrijednost </mat-header-cell>
         <mat-cell *matCellDef="let row"> {{ row.cijena * row.stanje | number:'1.2-2' }} KM </mat-cell>
       </ng-container>
