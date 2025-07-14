@@ -1,4 +1,41 @@
-<div class="container">
+<div class="container" *ngIf="flag == 2">
+  <h3 mat-dialog-title *ngIf="flag == 2">Izmjena datuma transakcije</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+    <div mat-dialog-content (keydown.enter)="onSubmit()">
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [(ngModel)]="data.datum"  required />
+          <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
+          <mat-datepicker #datum></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="form">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Opis" name="opis" [disabled]="flag == 2" [(ngModel)]="data.opis"  />
+        </mat-form-field>
+      </div>
+
+    </div>
+  </form>
+
+  <div class="form" style="color: red; font-size: 13px;">
+    Da li ste sigurni da ste pogriješili datum ove transakcije i da želite da je izmijenite?
+  </div>
+
+  <div class="mat-dialog-actions">
+      <button matButton  class="izmjena" *ngIf="flag == 2" mat-dialog-close="1" (click)="update()">Izmjena</button>
+      <button matButton class="odustani" (click)="cancel()">Odustani</button>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="container" *ngIf="flag == 3">
   <h3 mat-dialog-title *ngIf="flag == 3">Brisanje transakcije</h3>
 
   <form class="dialog-content" #formControl="ngForm">
@@ -34,7 +71,7 @@
   </div>
 
   <div class="mat-dialog-actions">
-      <button matButton *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Brisanje</button>
-      <button matButton (click)="cancel()">Odustani</button>
+      <button matButton class="brisanje" *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Brisanje</button>
+      <button matButton class="odustani" (click)="cancel()">Odustani</button>
   </div>
 </div>

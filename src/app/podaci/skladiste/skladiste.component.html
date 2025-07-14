@@ -60,7 +60,7 @@
 
       <ng-container matColumnDef="stanje">
         <mat-header-cell mat-sort-header *matHeaderCellDef> Stanje </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.stanje}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.stanje | number:'1.2-2'}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="jedinica">

@@ -17,17 +17,27 @@ import { ArtiklService } from '../../service/artikl.service';
 import { Artikl } from '../../model/artikl';
 import { forkJoin } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MY_DATE_FORMATS } from '../artikl-dijalog/artikl-dijalog.component';
 
 @Component({
   selector: 'app-nalog-dijalog',
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatNativeDateModule],
   templateUrl: './nalog-dijalog.component.html',
-  styleUrl: './nalog-dijalog.component.css'
+  styleUrl: './nalog-dijalog.component.css',
+  providers: [
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+  ]
 })
 export class NalogDijalogComponent implements OnInit{
   @Output() dataChanged = new EventEmitter<void>();
   flag!:number;
   kupci!: Kupac[];
+  zavrsniDatum: Date | null = null;
+
 
   constructor(
     public snackBar:MatSnackBar,
@@ -116,28 +126,33 @@ export class NalogDijalogComponent implements OnInit{
     }
   }
 
-  public zavrsi() {
-    console.log(this.data);
-    this.data.zavrsen = true;
-    this.data.datum = new Date();
-    const company = this.getCompanyFromSessionStorage();
-    if (!company) return;
-
-    this.data.company = company;
-    this.service.updateNalog(this.data).subscribe(
-      (data) => {
-        this.snackBar.open(`Nalog je uspješno završen!`, `OK`, {duration: 2500});
-        this.dialogRef.close(1);
-        this.stavkeUTransakcije(this.data.id!);
-      }
-    ),
-    (error:Error) => {
-      console.log(error.name + ' ' + error.message);
-      this.snackBar.open(`Neuspješna izmjena!`, `OK`, {duration: 2500});
-    }
+public zavrsi() {
+  if (!this.zavrsniDatum) {
+    this.snackBar.open(`Morate unijeti datum završetka!`, `OK`, { duration: 2500 });
+    return;
   }
 
-  public stavkeUTransakcije(id:number) {
+  this.data.zavrsen = true;
+  this.data.datum = this.zavrsniDatum;
+
+  const company = this.getCompanyFromSessionStorage();
+  if (!company) return;
+
+  this.data.company = company;
+  this.service.updateNalog(this.data).subscribe(
+    () => {
+      this.snackBar.open(`Nalog je uspješno završen!`, `OK`, { duration: 2500 });
+      this.dialogRef.close(1);
+      this.stavkeUTransakcije(this.data.id!, this.zavrsniDatum!);
+    },
+    (error: Error) => {
+      console.log(error.name + ' ' + error.message);
+      this.snackBar.open(`Neuspješna izmjena!`, `OK`, { duration: 2500 });
+    }
+  );
+}
+
+  public stavkeUTransakcije(id:number, datumZavrsetka: Date) {
     this.stavkaService.getStavkeZaNalog(id).subscribe(
       (stavke) => {
         stavke.forEach((stavka: any) => {
@@ -158,7 +173,7 @@ export class NalogDijalogComponent implements OnInit{
               // Kreiranje novih transakcija
               const transakcija: Transakcija = {
                 id: null,
-                datum: new Date(),
+                datum: datumZavrsetka,
                 kolicina: stavka.kolicina,
                 novoStanje: artikl.stanje,
                 ulaz: 0,

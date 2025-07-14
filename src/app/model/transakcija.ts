@@ -2,7 +2,7 @@ import { Company } from "./company";
 
 export class Transakcija {
   id!:number | null;
-  datum!:Date;
+  datum!:Date| null;
   kolicina!:number | null;
   novoStanje!:number | null;
   opis!:string;

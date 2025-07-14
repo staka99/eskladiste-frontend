@@ -1,3 +1,4 @@
+import { TSNonNullExpression } from './../../../../node_modules/@babel/types/lib/index-legacy.d';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -46,7 +47,7 @@ export class ArtiklDijalogComponent implements OnInit {
 
   public dataTransakcija: PomocnaTransakcija = {
     id: null,
-    datum: new Date(),
+    datum: null,
     opis: "",
     artikl: new Artikl(),
     kolicina: null,
@@ -58,7 +59,7 @@ export class ArtiklDijalogComponent implements OnInit {
 
   public transakcija: Transakcija = {
     id: null,
-    datum: new Date(),
+    datum: null,
     opis: "",
     artikl: "",
     kolicina: null,

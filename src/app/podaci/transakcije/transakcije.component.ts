@@ -20,10 +20,12 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
 import { AuthService } from '../../service/auth.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-transakcije',
-  imports: [CommonModule, MatToolbarModule, MatTableModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTooltipModule, MatSelectModule],
+  imports: [CommonModule, MatToolbarModule, MatTableModule, MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTooltipModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './transakcije.component.html',
   styleUrl: './transakcije.component.css'
 })
@@ -105,20 +107,26 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
     this.izracunaj();
   }
 
-  customFilterPredicate(data: Transakcija, filter: string): boolean {
-    const transactionDate = new Date(data.datum);
-    const transactionMonth = transactionDate.getMonth() + 1;
-    const transactionYear = transactionDate.getFullYear();
+customFilterPredicate(data: Transakcija, filter: string): boolean {
+  if (!data.datum) return false;
 
-    const monthMatches = this.selectedMonth === transactionMonth || this.selectedMonth === 0;
-    const yearMatches = this.selectedYear === transactionYear || this.selectedYear === 0;
+  const transactionDate = new Date(data.datum);
 
-    return monthMatches && yearMatches;
-  }
+  // Provera da li je datum validan
+  if (isNaN(transactionDate.getTime())) return false;
+
+  const transactionMonth = transactionDate.getMonth() + 1;
+  const transactionYear = transactionDate.getFullYear();
+
+  const monthMatches = this.selectedMonth === transactionMonth || this.selectedMonth === 0;
+  const yearMatches = this.selectedYear === transactionYear || this.selectedYear === 0;
+
+  return monthMatches && yearMatches;
+}
 
 
-  public openDialog(flag:number, id?:number, datum?:Date, opis?:String, artikl?:Artikl, kolicina?:number, novoStanje?:number ) {
-    const dialogRef = this.dialog.open(TransakcijaDijalogComponent, {data : { id, datum, opis, artikl, kolicina, novoStanje }});
+  public openDialog(flag:number, id?:number, datum?:Date, opis?:String, artikl?:Artikl, kolicina?:number, novoStanje?:number, jedinica?:String, ulaz?:number, izlaz?:number ) {
+    const dialogRef = this.dialog.open(TransakcijaDijalogComponent, {data : { id, datum, opis, artikl, kolicina, novoStanje, jedinica, ulaz, izlaz }});
       dialogRef.componentInstance.flag = flag;
       dialogRef.afterClosed().subscribe(
         (result) => {
@@ -141,6 +149,25 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
     }, 0);
 
   }
+
+  onDatumChange(row: Transakcija) {
+  if (!row.id) {
+    console.error('Transakcija nema ID!');
+    return;
+  }
+
+  // Pretpostavljam da row.datum već ima novi datum (jer je vezan sa ngModel)
+  this.service.updateTransakcija(row).subscribe({
+    next: () => {
+      console.log(`Datum transakcije ${row.id} je uspešno ažuriran.`);
+      // Opcionalno:
+      // this.loadData();  // osveži celu listu
+    },
+    error: (error) => {
+      console.error('Greška prilikom ažuriranja datuma:', error);
+    }
+  });
+}
 
 
     // ------------------------------ PDF
@@ -168,10 +195,11 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
       const head = [['RB', 'Datum', 'Opis', 'Artikl', 'Količina', 'Novo stanje', 'Ulaz', 'Izlaz']];
 
       const sortedData = this.dataSource.filteredData.slice().sort((a, b) => {
-        const dateA = new Date(a.datum);
-        const dateB = new Date(b.datum);
-        return dateA.getTime() - dateB.getTime();
+        const dateA = a.datum ? new Date(a.datum).getTime() : 0;
+        const dateB = b.datum ? new Date(b.datum).getTime() : 0;
+        return dateA - dateB;
       });
+
 
       doc.addFileToVFS('Roboto-Regular.ttf', robotoVfs['Roboto-Regular.ttf']);
       doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
@@ -179,7 +207,7 @@ export class TransakcijeComponent implements OnInit, OnDestroy{
 
       const data = sortedData.map((transakcija, index) => [
         index + 1,
-        new Date(transakcija.datum).toLocaleDateString('sr-Latn-BA'),
+        new Date(transakcija.datum ? new Date(transakcija.datum).getTime() : 0).toLocaleDateString('sr-Latn-BA'),
         transakcija.opis || '',
         transakcija.artikl || '',
         transakcija.kolicina?.toString() || '0',

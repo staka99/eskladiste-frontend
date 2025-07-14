@@ -8,13 +8,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Transakcija } from '../../model/transakcija';
 import { TransakcijaService } from '../../service/transakcija.service';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MY_DATE_FORMATS } from '../artikl-dijalog/artikl-dijalog.component';
 
 @Component({
   selector: 'app-transakcija-dijalog',
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, FormsModule, ReactiveFormsModule, MatDatepickerModule, MatNativeDateModule],
   templateUrl: './transakcija-dijalog.component.html',
   styleUrl: './transakcija-dijalog.component.css',
-  providers: [DatePipe]
+  providers: [DatePipe,
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
+]
 })
 export class TransakcijaDijalogComponent {
   @Output() dataChanged = new EventEmitter<void>();
@@ -42,6 +49,32 @@ export class TransakcijaDijalogComponent {
     return this.datePipe.transform(this.data.datum, 'dd/MM/yyyy') || '';
   }
 
+ public update() {
+  console.log(this.data);
+  const company = this.getCompanyFromSessionStorage();
+   if (!company) return;
+  
+  this.data.company = company;
+
+  if (!this.data || !this.data.id) {
+    console.error("Nedostaje ID transakcije za ažuriranje.");
+    return;
+  }
+
+  this.service.updateTransakcija(this.data).subscribe({
+    next: () => {
+      this.snackBar.open("Transakcija je uspješno ažurirana!", "OK", { duration: 2500 });
+      this.dialogRef.close(1); // vraća rezultat da bi se parent reloadovao
+      console.log(this.data);
+    },
+    error: (error) => {
+      console.error("Greška prilikom ažuriranja transakcije:", error);
+      this.snackBar.open("Greška prilikom ažuriranja!", "OK", { duration: 2500 });
+    }
+  });
+}
+
+
   public delete() {
     if(this.data.id) {
       this.service.deleteTransakcija(this.data.id).subscribe({
@@ -63,5 +96,20 @@ export class TransakcijaDijalogComponent {
   public cancel() {
     this.dialogRef.close();
     this.snackBar.open(`Odustali ste od ove aktivnosti!`, `OK`, {duration: 2500});
+  }
+
+    private getCompanyFromSessionStorage(): { id: number, name: string } | null {
+    const companyIdStr = sessionStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId === null) {
+      console.error("Nema company ID u sessionStorage.");
+      return null;
+    }
+
+    return {
+      id: companyId,
+      name: ""
+    };
   }
 }
