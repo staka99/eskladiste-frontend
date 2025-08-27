@@ -1,0 +1,53 @@
+<div class="kalkulacija-container">
+  <mat-toolbar>
+    <span class="title-center"> Mjesečna kalkulacija skladišta </span>
+  </mat-toolbar>
+
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="mjesec">
+      <mat-header-cell *matHeaderCellDef> MJESEC </mat-header-cell>
+      <mat-cell *matCellDef="let row" class="cell-mjesec">
+        {{row.mjesec}}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="stanjePrethodni">
+      <mat-header-cell *matHeaderCellDef> Stanje prethodni </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.stanjePrethodni | number:'1.2-2'}} KM
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ulaz">
+      <mat-header-cell *matHeaderCellDef> Ulaz </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.ulaz | number:'1.2-2'}} KM
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kalkulacija">
+      <mat-header-cell *matHeaderCellDef> Kalkulacija (stanje + ulaz) </mat-header-cell>
+      <mat-cell *matCellDef="let row" class="cell-kalkulacija">
+        {{row.kalkulacija | number:'1.2-2'}} KM
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="izlaz">
+      <mat-header-cell *matHeaderCellDef> Izlaz </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        {{row.izlaz | number:'1.2-2'}} KM
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ukupno">
+      <mat-header-cell *matHeaderCellDef> Ukupno mjesec </mat-header-cell>
+      <mat-cell *matCellDef="let row" class="cell-ukupno">
+        {{row.ukupno | number:'1.2-2'}} KM
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

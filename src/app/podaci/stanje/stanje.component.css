@@ -1,0 +1,151 @@
+.kupci-container {
+  background-color: rgb(234, 234, 234);
+  min-height: 100vh;
+}
+
+.table {
+  padding-top: 50px;
+  padding-bottom: 60px;
+  margin: 0 auto;
+  width: 60%;
+}
+
+mat-cell:nth-child(1),
+mat-header-cell:nth-child(1) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 25%;
+}
+
+mat-cell:nth-child(2),
+mat-header-cell:nth-child(2) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 25%;
+}
+
+mat-cell:nth-child(3),
+mat-header-cell:nth-child(3) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 25%;
+}
+
+mat-cell:nth-child(4),
+mat-header-cell:nth-child(4) {
+  display: flex;
+  flex: 0 0 25%;
+  justify-content: center;
+}
+
+
+.title-center {
+  margin: 0 auto;
+}
+
+.mat-toolbar {
+  background: #fbda61;
+  color: black;
+  width: 100%;
+}
+
+.mat-icon {
+  color: rgb(145, 145, 145);
+}
+
+
+
+.pdf-button {
+  background-color: #ffffff !important;
+  color: black !important;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .table {
+    width: 100%;
+    padding: 0;
+  }
+
+  .title-center {
+    font-size: 1.2rem;
+  }
+
+  .table mat-header-cell {
+    font-size: 6px;
+    justify-content: center;
+  }
+
+  .table mat-cell {
+    font-size: 10px;
+  }
+  
+  .mat-icon {
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    flex: 0;
+  }
+
+  mat-cell:nth-child(1),
+  mat-header-cell:nth-child(1) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 5%;
+}
+
+mat-cell:nth-child(2),
+mat-header-cell:nth-child(2) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 17%;
+}
+
+mat-cell:nth-child(3),
+mat-header-cell:nth-child(3) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+mat-cell:nth-child(4),
+mat-header-cell:nth-child(4) {
+  display: flex;
+  flex: 0 0 16%;
+  justify-content: center;
+}
+
+mat-cell:nth-child(5),
+mat-header-cell:nth-child(5) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 10%;
+}
+
+mat-cell:nth-child(6),
+mat-header-cell:nth-child(6) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 15%;
+}
+
+mat-cell:nth-child(7),
+mat-header-cell:nth-child(7) {
+  display: flex;
+  justify-content: center;
+  flex: 0 0 20%;
+}
+
+}

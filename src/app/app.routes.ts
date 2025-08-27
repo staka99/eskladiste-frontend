@@ -7,6 +7,8 @@ import { NaloziZavrseniComponent } from './podaci/nalozi-zavrseni/nalozi-zavrsen
 import { LoginComponent } from './login/login.component';
 import { KompanijeComponent } from './admin/kompanije/kompanije.component';
 import { KorisniciComponent } from './admin/korisnici/korisnici.component';
+import { StanjeComponent } from './podaci/stanje/stanje.component';
+import { KalkulacijaComponent } from './podaci/kalkulacija/kalkulacija.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -17,5 +19,7 @@ export const routes: Routes = [
   { path: 'evidencija', component: TransakcijeComponent },
   { path: 'kompanije', component: KompanijeComponent },
   { path: 'korisnici', component: KorisniciComponent },
+  { path: 'stanje', component: StanjeComponent },
+  { path: 'kalkulacija', component: KalkulacijaComponent },
   { path: 'login', component: LoginComponent },
 ];

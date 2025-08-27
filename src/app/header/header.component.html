@@ -16,6 +16,8 @@
     <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/radni-nalozi-u-izradi" routerLinkActive="active" (click)="toggleMenu()">Otvoreni radni nalozi</a>
     <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/radni-nalozi-zavrseni" routerLinkActive="active" (click)="toggleMenu()">Završeni radni nalozi</a>
     <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/evidencija" routerLinkActive="active" (click)="toggleMenu()">Evidencija</a>
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/stanje" routerLinkActive="active" (click)="toggleMenu()">Stanje</a>
+    <a *ngIf="isLoggedIn() && authService.isUser()" routerLink="/kalkulacija" routerLinkActive="active" (click)="toggleMenu()">Kalkulacija</a>
     <a *ngIf="!isLoggedIn() && !authService.isUser()" routerLink="/login" routerLinkActive="active" (click)="toggleMenu()">Login</a>
     <a *ngIf="isLoggedIn() && authService.isAdmin()" routerLink="/kompanije" routerLinkActive="active" (click)="toggleMenu()">Kompanije</a>
     <a *ngIf="isLoggedIn() && authService.isAdmin()" routerLink="/korisnici" routerLinkActive="active" (click)="toggleMenu()">Korisnici</a>

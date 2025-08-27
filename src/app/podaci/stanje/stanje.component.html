@@ -1,0 +1,53 @@
+<div class="kupci-container" *ngIf="authService.isUser()">
+  <div class="table">
+
+
+  <mat-toolbar>
+    <span class="title-center"> Lista mjesečnih presjeka stanja skladišta </span>
+  </mat-toolbar>
+
+  <div class="container mat-elavation-z8">
+    </div>
+
+    <mat-table [dataSource]="dataSource" matSort matSortActive="datum" matSortDirection="asc">
+
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef> RB </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index"> {{i + 1}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="datum">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Datum </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.datum | date:'dd.MM.yyyy'}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="stanje">
+        <mat-header-cell *matHeaderCellDef> Stanje skladišta </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.stanje}} KM </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index">
+          <button mat-icon-button class="mat-icon-button" (click)="openDialog(2, row.id, row.datum, row.stanje)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openDialog(3, row.id, row.datum, row.stanje)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"> </mat-header-row>
+      <mat-row style="cursor: pointer;" *matRowDef="let row; columns: displayedColumns"> </mat-row>
+    </mat-table>
+
+  </div>
+
+<div *ngIf="!authService.isUser()" class="overlay">
+  <div class="modal">
+    <h2>Access Denied</h2>
+    <p>You do not have permission to access this data.</p>
+  </div>
+</div>

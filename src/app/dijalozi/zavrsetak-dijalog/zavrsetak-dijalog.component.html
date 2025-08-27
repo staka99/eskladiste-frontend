@@ -1,0 +1,29 @@
+<div class="container">
+  <h3 mat-dialog-title *ngIf="flag == 1">Završetak mjesečnog unosa</h3>
+  <h3 mat-dialog-title *ngIf="flag == 2">Izmjena podataka o mjesečnom izvještaju</h3>
+  <h3 mat-dialog-title *ngIf="flag == 3">Brisanje podataka o mjesečnom izvještaju</h3>
+
+  <form class="dialog-content" #formControl="ngForm">
+        <div class="form">
+          <p>Završni datum mjeseca za koji se zatvara unos: </p> <br>
+          <mat-form-field class="form-field">
+            <input matInput [matDatepicker]="datum" [disabled]="flag == 3" placeholder="Odaberite datum" name="Datum" [(ngModel)]="data.datum" required />
+            <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
+            <mat-datepicker #datum></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+      <div class="form" *ngIf="flag != 1">
+        <mat-form-field class="form-field">
+          <input matInput placeholder="Stanje" name="stanje" [disabled]="flag == 3" [(ngModel)]="data.stanje"/>
+        </mat-form-field>
+      </div>
+  </form>
+
+  <div class="mat-dialog-actions">
+      <button matButton *ngIf="flag == 1" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="add()" >Završi</button>
+      <button matButton *ngIf="flag == 2" type="submit" mat-dialog-close="1" [disabled]="!formControl.valid" (click)="update()">Izmjena</button>
+      <button matButton *ngIf="flag == 3" mat-dialog-close="1" (click)="delete()">Brisanje</button>
+      <button matButton (click)="cancel()">Odustani</button>
+  </div>
+</div>

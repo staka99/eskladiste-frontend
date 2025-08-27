@@ -20,6 +20,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { robotoVfs } from '../../../../public/vfs-fonts';
 import { AuthService } from '../../service/auth.service';
+import { ZavrsetakDijalogComponent } from '../../dijalozi/zavrsetak-dijalog/zavrsetak-dijalog.component';
 @Component({
   selector: 'app-skladiste',
   imports: [CommonModule, MatToolbarModule, MatTableModule, MatIconModule, MatButtonModule, MatTooltipModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule],
@@ -94,6 +95,19 @@ export class SkladisteComponent implements OnInit, OnDestroy{
 
   public openDialog(flag:number, id?:number, sifra?:String, naziv?:String, jedinica?:String, stanje?:number, cijena?:number ) {
     const dialogRef = this.dialog.open(ArtiklDijalogComponent, {data : { id, sifra, naziv, jedinica, stanje, cijena }});
+      dialogRef.componentInstance.flag = flag;
+      dialogRef.afterClosed().subscribe(
+        (result) => {
+          if(result==1) {
+            this.loadData();
+            this.izracunajUkupnuVrijednost();
+          }
+        }
+      )
+  }
+
+    public openDialogZavrsi(flag:number, id?:number, datum?:Date, stanje?:number ) {
+    const dialogRef = this.dialog.open(ZavrsetakDijalogComponent, {data : { id, datum, stanje: Number(this.ukupnaVrijednost.toFixed(2)) }});
       dialogRef.componentInstance.flag = flag;
       dialogRef.afterClosed().subscribe(
         (result) => {
