@@ -14,7 +14,7 @@ mat-cell:nth-child(1),
 mat-header-cell:nth-child(1) {
   display: flex;
   justify-content: center;
-  flex: 0 0 25%;
+  flex: 0 0 15%;
 }
 
 mat-cell:nth-child(2),
@@ -28,7 +28,7 @@ mat-cell:nth-child(3),
 mat-header-cell:nth-child(3) {
   display: flex;
   justify-content: center;
-  flex: 0 0 25%;
+  flex: 0 0 35%;
 }
 
 mat-cell:nth-child(4),
@@ -80,18 +80,18 @@ mat-header-cell:nth-child(4) {
   }
 
   .title-center {
-    font-size: 1.2rem;
+    font-size: 1.0rem;
   }
 
   .table mat-header-cell {
-    font-size: 6px;
+    font-size: 10px;
     justify-content: center;
   }
 
   .table mat-cell {
     font-size: 10px;
   }
-  
+
   .mat-icon {
     font-size: 18px;
     margin: 0;

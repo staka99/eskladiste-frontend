@@ -1,6 +1,33 @@
+.kalkulacija-container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  overflow-x: auto; /* horizontalni scroll na manjim ekranima */
+}
+
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Toolbar i tabela sada dele istu širinu */
+.table-wrapper mat-toolbar,
+.table-wrapper mat-table {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Toolbar */
 .mat-toolbar {
   background: #fbda61;
   color: black;
+}
+
+/* Title toolbar */
+.mat-toolbar .title-center {
+  font-size: 18px;
+  text-align: center;
   width: 100%;
 }
 
@@ -8,9 +35,11 @@
 .mat-header-cell {
   font-weight: bold;
   background-color: #37474f; /* tamnosiva/plava za header */
-  color: #ffffff; /* bel tekst */
+  color: #ffffff;
   text-transform: uppercase;
   text-align: center;
+  padding: 12px 8px;
+  font-size: 14px;
 }
 
 /* Redovi tabele */
@@ -23,9 +52,12 @@
 }
 
 /* Tekst u ćeliji */
-.mat-cell span, .mat-cell {
+.mat-cell span,
+.mat-cell {
   display: block;
   text-align: center;
+  padding: 10px 6px;
+  font-size: 14px;
 }
 
 /* Kolona MJESEC */
@@ -42,8 +74,59 @@
 
 /* Kolona UKUPNO */
 .cell-ukupno {
-  background-color: #fbda61; /* svetloružičasta pozadina */
+  background-color: #fbda61;
   font-weight: bold;
   border-top: 2px solid #62625f;
   border-bottom: 2px solid #62625f;
+}
+
+/* Osnovno za tabelu */
+mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto; /* da se kolone bolje prilagođavaju */
+}
+
+/* ✅ Manji uređaji */
+@media (max-width: 768px) {
+  .mat-header-cell,
+  .mat-cell {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  .mat-toolbar .title-center {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .table-wrapper {
+    max-width: 100%;
+    overflow-x: auto; /* horizontalni scroll */
+  }
+
+  mat-table {
+    min-width: 600px; /* tabela ne može realno stati na 320px */
+  }
+
+  .mat-header-cell,
+  .mat-cell {
+    font-size: 10px;
+    padding: 6px 2px;
+  }
+
+  .mat-toolbar {
+    background: #fbda61;
+    min-width: 600px;
+    color: black;
+  }
+
+  .mat-toolbar .title-center {
+    font-size: 14px;
+    min-width: 600px;
+  }
+
+
 }

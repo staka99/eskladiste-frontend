@@ -270,7 +270,7 @@ mat-paginator {
 
   .table mat-header-cell,
   .table mat-cell {
-    font-size: 12px; 
+    font-size: 12px;
   }
 }
 
@@ -278,7 +278,6 @@ mat-paginator {
   .table {
     width: 100%;
     padding: 0;
-    margin: 0;
   }
 
   .title-center {
@@ -293,6 +292,23 @@ mat-paginator {
   .table mat-cell {
     font-size: 10px;
   }
+
+  .mat-icon {
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    flex: 0;
+  }
+
+  .action-buttons button {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .ukupna-vrijednost-container {
+    font-size: 14px;
+  }
+
 
   mat-cell:nth-child(1),
   mat-header-cell:nth-child(1) {
