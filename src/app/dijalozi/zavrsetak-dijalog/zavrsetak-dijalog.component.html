@@ -7,7 +7,7 @@
         <div class="form">
           <p>Završni datum mjeseca za koji se zatvara unos: </p> <br>
           <mat-form-field class="form-field">
-            <input matInput [matDatepicker]="datum" [disabled]="flag == 3" placeholder="Odaberite datum" name="Datum" [(ngModel)]="data.datum" required />
+            <input matInput [matDatepicker]="datum" [readonly]="true" [disabled]="flag == 3" placeholder="Odaberite datum" name="Datum" [(ngModel)]="data.datum" required />
             <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
             <mat-datepicker #datum></mat-datepicker>
           </mat-form-field>
