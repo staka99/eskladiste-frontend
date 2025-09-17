@@ -14,6 +14,7 @@ import { TransakcijaService } from '../../service/transakcija.service';
 import { PomocnaTransakcija } from '../../model/pomocnaTransakcija';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { Transakcija } from '../../model/transakcija';
+import { StanjeService } from '../../service/stanje.service';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -44,6 +45,8 @@ export class ArtiklDijalogComponent implements OnInit {
   artikli: Artikl[] = [];
   selectedArtiklId: Artikl | null = null;
   selectedValue: string = '';
+  maxDate: string = '';
+
 
   public dataTransakcija: PomocnaTransakcija = {
     id: null,
@@ -76,6 +79,7 @@ export class ArtiklDijalogComponent implements OnInit {
     @Inject (MAT_DIALOG_DATA) public dataTransakcijaInjected: Transakcija,
     public service:ArtiklService,
     public transakcijaService:TransakcijaService,
+    public stanjeService:StanjeService
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +91,16 @@ export class ArtiklDijalogComponent implements OnInit {
         this.artikli = data;
       });
       this.getArtikli();
+
+      this.stanjeService.getStanjaByCompany(companyId).subscribe(stanja => {
+        const datumi = stanja.map((s: any) => s.datum as string);
+
+        const max: string = datumi.reduce((a: string, b: string) => a > b ? a : b);
+
+        this.maxDate = max;
+        console.log(this.maxDate);
+      });
+
     }
   }
 

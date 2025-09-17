@@ -20,6 +20,7 @@ import { switchMap } from 'rxjs/operators';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MY_DATE_FORMATS } from '../artikl-dijalog/artikl-dijalog.component';
+import { StanjeService } from '../../service/stanje.service';
 
 @Component({
   selector: 'app-nalog-dijalog',
@@ -37,6 +38,7 @@ export class NalogDijalogComponent implements OnInit{
   flag!:number;
   kupci!: Kupac[];
   zavrsniDatum: Date | null = null;
+  maxDate: string = '';
 
 
   constructor(
@@ -48,6 +50,7 @@ export class NalogDijalogComponent implements OnInit{
     public stavkaService:StavkaService,
     public transakcijaService: TransakcijaService,
     public artiklService: ArtiklService,
+    public stanjeService:StanjeService,
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +62,15 @@ export class NalogDijalogComponent implements OnInit{
         this.kupci = data;
       });
       this.getKupci();
+
+      this.stanjeService.getStanjaByCompany(companyId).subscribe(stanja => {
+        const datumi = stanja.map((s: any) => s.datum as string);
+
+        const max: string = datumi.reduce((a: string, b: string) => a > b ? a : b);
+
+        this.maxDate = max;
+        console.log(this.maxDate);
+      });
     }
   }
 

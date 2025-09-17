@@ -22,7 +22,7 @@
 
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput [matDatepicker]="datum" [readonly]="true"  placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" (keydown.enter)="focusNext($event)" required />
+          <input matInput [min]="maxDate" [matDatepicker]="datum" [readonly]="true"  placeholder="Datum ulaza" name="Datum" [(ngModel)]="dataTransakcija.datum" (keydown.enter)="focusNext($event)" required />
           <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
           <mat-datepicker #datum></mat-datepicker>
         </mat-form-field>
@@ -37,7 +37,7 @@
       </div>
 
       <div *ngIf="dataTransakcija.artikl.stanje >= 0" style="color: rgb(180, 180, 180); font-size: 13px;">
-        Trenutna količina ovog artikla u skladištu je: {{ dataTransakcija.artikl.stanje }}.
+        Trenutna količina ovog artikla u skladištu je: {{ dataTransakcija.artikl.stanje | number:'1.2-2' }}.
       </div>
 
       <div class="form">
@@ -78,7 +78,7 @@
     <form class="dialog-content" #formControl="ngForm">
       <div class="form">
         <mat-form-field class="form-field">
-          <input matInput [matDatepicker]="datum" [readonly]="true"  placeholder="Datum kreiranja" name="Datum" [(ngModel)]="dataTransakcija.datum" (keydown.enter)="focusNext($event)" required />
+          <input matInput [min]="maxDate" [matDatepicker]="datum" [readonly]="true"  placeholder="Datum ulaza" name="Datum" [(ngModel)]="dataTransakcija.datum" (keydown.enter)="focusNext($event)" required />
           <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
           <mat-datepicker #datum></mat-datepicker>
         </mat-form-field>
@@ -154,7 +154,7 @@
   <form class="dialog-content" #formControl="ngForm">
     <div class="form">
       <mat-form-field class="form-field">
-        <input matInput [matDatepicker]="datum" placeholder="Datum kreiranja" name="Datum" [readonly]="true" [(ngModel)]="dataTransakcija.datum" [disabled]="stanjeNedostupno()" (keydown.enter)="focusNext($event)" required />
+        <input matInput [min]="maxDate" [matDatepicker]="datum" placeholder="Datum otpisa" name="Datum" [readonly]="true" [(ngModel)]="dataTransakcija.datum" [disabled]="stanjeNedostupno()" (keydown.enter)="focusNext($event)" required />
         <mat-datepicker-toggle matSuffix [for]="datum"></mat-datepicker-toggle>
         <mat-datepicker #datum></mat-datepicker>
       </mat-form-field>
@@ -186,7 +186,7 @@
     </div>
 
     <div *ngIf="prekobrojnaKolicina()" style="color: red; font-size: 13px;">
-      Trenutna količina ovog artikla u skladištu je: {{ dataTransakcija.artikl.stanje }}.
+      Trenutna količina ovog artikla u skladištu je: {{ dataTransakcija.artikl.stanje | number:'1.2-2'}}.
     </div>
   </form>
 

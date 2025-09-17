@@ -37,6 +37,7 @@ export const MY_DATE_FORMATS = {
 export class ZavrsetakDijalogComponent {
  @Output() dataChanged = new EventEmitter<void>();
   flag!:number;
+  maxDate: string = '';
 
   constructor(
     public snackBar:MatSnackBar,
@@ -44,6 +45,24 @@ export class ZavrsetakDijalogComponent {
     @Inject (MAT_DIALOG_DATA) public data: Stanje,
     public service:StanjeService,
   ) {}
+
+    ngOnInit(): void {
+    const companyIdStr = sessionStorage.getItem('company');
+    const companyId = companyIdStr ? Number(companyIdStr) : null;
+
+    if (companyId !== null && !isNaN(companyId)) {
+      this.service.getStanjaByCompany(companyId).subscribe(stanja => {
+        const datumi = stanja.map((s: any) => s.datum as string);
+
+        const max: string = datumi.reduce((a: string, b: string) => a > b ? a : b);
+
+        this.maxDate = max;
+        console.log(this.maxDate);
+      });
+
+    }
+  }
+
 
   public compare(a:any, b:any) {
     return a.id == b.id;
