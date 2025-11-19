@@ -30,7 +30,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
   styleUrl: './transakcije.component.css'
 })
 export class TransakcijeComponent implements OnInit, OnDestroy{
-  displayedColumns = ['id', 'datum', 'opis', 'artikl', 'kolicina', 'novoStanje', 'ulaz', 'izlaz', /*'actions'*/];
+  displayedColumns = ['id', 'datum', 'opis', 'artikl', 'kolicina', 'novoStanje', 'ulaz', 'izlaz', 'actions'];
 
   dataSource!:MatTableDataSource<Transakcija>;
   subsription!:Subscription;
